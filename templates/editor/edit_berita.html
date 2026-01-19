@@ -1,0 +1,102 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Edit Berita{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl">
+
+  <!-- PAGE HEADER -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold">Edit Berita</h1>
+    <p class="text-gray-500 mt-1">
+      Perbarui judul, isi, dan thumbnail berita sebelum dipublikasikan
+    </p>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="bg-white rounded-xl shadow p-8 max-w-3xl">
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- THUMBNAIL -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Thumbnail Berita
+        </label>
+
+        {% if post.thumbnail %}
+          <img
+            src="{{ post.thumbnail.url }}"
+            alt="{{ post.title }}"
+            class="w-48 rounded-lg mb-3 border"
+          >
+        {% endif %}
+
+        <input
+          type="file"
+          name="thumbnail"
+          accept="image/*"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2"
+        >
+
+        <p class="text-xs text-gray-500 mt-1">
+          Biarkan kosong jika tidak ingin mengganti thumbnail
+        </p>
+      </div>
+
+      <!-- JUDUL -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Judul Berita
+        </label>
+        <input
+          type="text"
+          name="title"
+          value="{{ post.title }}"
+          required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2
+                 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        >
+      </div>
+
+      <!-- KONTEN -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Isi Berita
+        </label>
+        <textarea
+          name="content"
+          rows="8"
+          required
+          class="w-full border border-gray-300 rounded-lg px-4 py-2
+                 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        >{{ post.content }}</textarea>
+      </div>
+
+      <!-- ACTION -->
+      <div class="flex gap-4 pt-2">
+        <button
+          type="submit"
+          class="bg-[#FFC107] hover:bg-yellow-500 text-black
+                 font-medium px-6 py-2 rounded-lg"
+        >
+          Simpan Perubahan
+        </button>
+
+        <a
+          href="{% url 'moderasi_berita' %}"
+          class="border border-gray-300 hover:bg-gray-100
+                 text-gray-700 px-6 py-2 rounded-lg"
+        >
+          Batal
+        </a>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}

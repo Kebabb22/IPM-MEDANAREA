@@ -1,0 +1,101 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Struktur Organisasi{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="pt-24 pb-16 bg-white text-center">
+  <div class="max-w-4xl mx-auto px-6">
+
+    <img src="{% static 'images/logo-ipm.png' %}"
+         alt="Logo IPM"
+         class="w-28 h-28 mx-auto rounded-full shadow mb-6">
+
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+      <span class="text-[#157347]">Struktur</span>
+      <span class="text-[#FCD34D]"> Organisasi</span>
+    </h1>
+
+    <div class="w-24 h-1 mx-auto bg-gradient-to-r from-[#157347] to-[#FCD34D] rounded-full mb-6"></div>
+
+    <p class="text-gray-600 text-lg leading-relaxed">
+      Struktur kepengurusan PC IPM Medan Area yang menjalankan roda organisasi,
+      dakwah, dan kaderisasi pelajar Muhammadiyah.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= PIMPINAN UMUM ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Pimpinan Umum
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      {% for p in pimpinan %}
+      <div class="bg-white rounded-xl shadow hover:shadow-xl transition text-center">
+
+        {% if p.foto %}
+        <img src="{{ p.foto.url }}"
+             alt="{{ p.jabatan }}"
+             class="w-full h-56 object-cover rounded-t-xl">
+        {% else %}
+        <div class="w-full h-56 bg-gray-200 flex items-center justify-center rounded-t-xl">
+          <span class="text-gray-500 text-sm">Tidak ada foto</span>
+        </div>
+        {% endif %}
+
+        <div class="p-4">
+          <h3 class="font-bold text-lg">{{ p.nama }}</h3>
+          <p class="text-sm text-[#157347]">{{ p.jabatan }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p class="col-span-3 text-center text-gray-500">
+        Data pimpinan belum tersedia.
+      </p>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= BIDANG-BIDANG ================= -->
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Bidang-Bidang
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      {% for b in bidang_list %}
+      <a href="{% url 'detail_bidang' b.slug %}"
+         class="relative overflow-hidden rounded-xl shadow-lg group">
+
+        <img src="{% static 'images/fotobersama.png' %}"
+             class="w-full h-72 object-cover group-hover:scale-105 transition">
+
+        <span class="absolute bottom-4 left-4 bg-[#157347] text-white
+                     px-4 py-2 rounded-full text-sm font-semibold">
+          {{ b.nama }}
+        </span>
+      </a>
+      {% empty %}
+      <p class="col-span-2 text-center text-gray-500">
+        Data bidang belum tersedia.
+      </p>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

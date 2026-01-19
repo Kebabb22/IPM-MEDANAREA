@@ -1,0 +1,259 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Bidang KDI | Kajian Dakwah Islam{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO (10/10 UI & UX) ================= -->
+<section class="relative w-full h-[460px] md:h-[560px] overflow-hidden
+               rounded-b-[52px] md:rounded-b-[70px]
+               shadow-[0_30px_55px_-15px_rgba(0,0,0,0.4)]">
+
+  <img src="{% static 'images/fotobersama.png' %}"
+       alt="Kegiatan Bidang Kajian Dakwah Islam IPM"
+       class="w-full h-full object-cover object-center
+              brightness-105 contrast-110"
+       loading="lazy">
+
+  <div class="absolute inset-0 bg-gradient-to-b
+              from-black/30 via-black/45 to-black/70"></div>
+
+  <div class="absolute inset-0 flex flex-col justify-center items-center
+              text-center px-6">
+
+    <span class="text-sm uppercase tracking-widest text-white/80 mb-4">
+      Struktur Organisasi
+    </span>
+
+    <h1 class="text-white text-4xl md:text-5xl font-extrabold
+               tracking-tight mb-5">
+      Bidang KDI
+    </h1>
+
+    <p class="text-white/90 text-lg max-w-2xl leading-relaxed">
+      Kajian Dakwah Islam sebagai ruang penguatan iman,
+      pemahaman keislaman, dan dakwah pelajar berkemajuan.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= BREADCRUMB + KEMBALI ================= -->
+<div class="max-w-6xl mx-auto px-6 mt-10 mb-14">
+
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-500 mb-4">
+    <ol class="flex flex-wrap items-center gap-2">
+      <li><a href="/" class="hover:text-[#157347] transition">Home</a></li>
+      <li>/</li>
+      <li><a href="/profil/" class="hover:text-[#157347] transition">Profil</a></li>
+      <li>/</li>
+      <li>
+        <a href="/profil/struktur-organisasi/"
+           class="hover:text-[#157347] transition">
+          Struktur Organisasi
+        </a>
+      </li>
+      <li>/</li>
+      <li class="text-gray-700 font-medium">
+        Bidang KDI
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Tombol Kembali -->
+  <a href="/profil/struktur-organisasi/"
+     class="inline-flex items-center gap-2 text-sm font-medium
+            text-[#157347] hover:text-[#0f5c38] transition">
+    <span class="text-lg leading-none">←</span>
+    Kembali ke Struktur Organisasi
+  </a>
+
+</div>
+
+<!-- ================= DESKRIPSI BIDANG ================= -->
+<section class="pb-20 bg-white">
+  <div class="max-w-5xl mx-auto px-6 text-center">
+
+    <div class="w-24 h-1 mx-auto bg-[#FCD34D] rounded-full mb-8"></div>
+
+    <p class="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
+      Bidang Kajian Dakwah Islam (KDI) berperan dalam membina
+      pemahaman keislaman kader IPM melalui kajian, dakwah,
+      dan pembiasaan nilai-nilai Islam dalam kehidupan pelajar.
+      Bidang ini menjadi penggerak dakwah yang mencerahkan,
+      moderat, dan berkemajuan.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= STRUKTUR BIDANG ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Struktur Bidang
+    </h2>
+
+    <!-- Ketua & Sekretaris -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+
+      <div class="bg-white rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/ketua-bidang.jpg' %}"
+             class="w-full h-64 object-cover rounded-t-xl"
+             alt="Ketua Bidang">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Ahmad Fauzi</h3>
+          <p class="text-sm text-[#157347]">Ketua Bidang Perkaderan</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/sekretaris-bidang.jpg' %}"
+             class="w-full h-64 object-cover rounded-t-xl"
+             alt="Sekretaris Bidang">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Siti Rahma</h3>
+          <p class="text-sm text-[#157347]">Sekretaris Bidang Perkaderan</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Anggota Bidang -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota1.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Muhammad Rizki</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota2.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Nur Aisyah</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota3.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Fajar Hidayat</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota4.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Dinda Safitri</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= TUJUAN & FOKUS ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Tujuan & Fokus Bidang
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Penguatan Aqidah
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Menanamkan nilai aqidah Islam yang lurus dan kokoh
+          sebagai landasan berfikir dan bersikap kader IPM.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Pemahaman Keislaman
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Meningkatkan pemahaman ajaran Islam secara utuh,
+          kontekstual, dan berlandaskan Al-Qur’an dan Sunnah.
+        </p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Dakwah Pelajar
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Mengembangkan dakwah yang ramah, kreatif, dan relevan
+          dengan dunia pelajar dan generasi muda.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROGRAM KERJA ================= -->
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Program Kerja
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Kajian Keislaman Rutin
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Kajian rutin untuk memperdalam pemahaman keislaman
+          kader IPM secara bertahap dan berkelanjutan.
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Dakwah Kreatif Pelajar
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Dakwah melalui media kreatif seperti poster,
+          video pendek, dan konten digital Islami.
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Pembinaan Akhlak
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Program pembiasaan akhlakul karimah dalam
+          kehidupan sehari-hari kader IPM.
+        </p>
+      </div>
+
+      <div class="bg-gray-50 p-6 rounded-xl shadow">
+        <h3 class="font-semibold text-lg mb-2">
+          Peringatan Hari Besar Islam
+        </h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Kegiatan peringatan hari besar Islam sebagai
+          sarana dakwah dan syiar Islam di kalangan pelajar.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section
+  id="beranda"
+  class="relative min-h-[70vh] md:min-h-[85vh] overflow-hidden"
+>
+  <!-- IMAGE BACKGROUND -->
+  <img
+    src="{% static 'images/foto-bersama-pa-2024-2026.png' %}"
+    alt="Foto Bersama PC IPM Medan Area"
+    class="absolute inset-0 w-full h-full object-cover"
+  >
+
+  <!-- OVERLAY + CONTENT -->
+  <div class="relative bg-black/60 min-h-[70vh] md:min-h-[85vh]
+              flex flex-col justify-center text-center text-white px-4">
+
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
+      Selamat Datang di Website
+    </h2>
+
+    <p class="text-xl md:text-2xl font-semibold text-[#FCD34D] mb-5">
+      Pimpinan Cabang Ikatan Pelajar Muhammadiyah Medan Area
+    </p>
+
+    <p class="text-base max-w-2xl mx-auto leading-relaxed opacity-90">
+      Bersama membangun pelajar berkemajuan, berakhlak, dan berintegritas tinggi
+      dalam mewujudkan cita-cita Muhammadiyah.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= SAMBUTAN ================= -->
+<section id="sambutan" class="pt-20 pb-10 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h3 class="text-3xl font-bold text-[#157347] text-center mb-12">
+      Sambutan Ketua PC IPM Medan Area
+    </h3>
+
+    <div class="flex flex-col md:flex-row gap-10 items-center">
+
+      <!-- TEKS -->
+      <div class="md:w-1/2 text-gray-600 text-[15px] leading-relaxed text-justify">
+        <p>
+          Assalamu’alaikum warahmatullahi wabarakatuh.<br><br>
+
+          Puji syukur ke hadirat Allah SWT atas limpahan rahmat dan karunia-Nya,
+          sehingga website resmi PC IPM Medan Area hadir sebagai sarana informasi,
+          komunikasi, dan dakwah.<br><br>
+
+          Website ini menjadi wadah transparansi kegiatan, publikasi program kerja,
+          serta media inspirasi bagi kader IPM Medan Area.<br><br>
+
+          Wassalamu’alaikum warahmatullahi wabarakatuh.<br><br>
+
+          <span class="font-semibold text-gray-800">
+            Ketua Umum<br>
+            Rangga Ramadhan Syahputra
+          </span>
+        </p>
+      </div>
+
+      <!-- FOTO -->
+      <div class="md:w-1/2 flex flex-col items-center">
+        <img
+          src="{% static 'images/foto-ketua-umum.jpeg' %}"
+          alt="Ketua Umum PC IPM Medan Area"
+          class="w-48 h-48 md:w-80 md:h-80 object-cover rounded-2xl shadow-lg mb-4"
+        >
+        <div class="text-center">
+          <span class="text-[#157347] font-semibold block">
+            Ketua Umum PC IPM Medan Area
+          </span>
+          <span class="text-gray-500">
+            Periode 2024–2026
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= BERITA TERBARU ================= -->
+<section id="berita" class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-green-700 mb-10">
+      Berita Terbaru
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for post in posts %}
+        <article class="bg-white rounded-lg shadow hover:shadow-xl transition">
+
+          {% if post.thumbnail %}
+            <img
+              src="{{ post.thumbnail.url }}"
+              alt="{{ post.title }}"
+              class="w-full h-48 object-cover rounded-t-lg"
+            >
+          {% endif %}
+
+          <div class="p-6">
+            <h3 class="text-lg font-bold mb-2">
+              {{ post.title }}
+            </h3>
+
+            <p class="text-sm text-gray-500 mb-3">
+              {{ post.created_at|date:"d M Y" }}
+            </p>
+
+            <a
+              href="{% url 'detail_berita' post.slug %}"
+              class="text-green-700 font-semibold hover:underline"
+            >
+              Baca Selengkapnya →
+            </a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="text-center text-gray-500 col-span-3">
+          Belum ada berita.
+        </p>
+      {% endfor %}
+    </div>
+
+    <div class="flex justify-center mt-10">
+      <a
+        href="{% url 'berita' %}"
+        class="bg-green-700 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-800 transition"
+      >
+        Lihat Selengkapnya
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

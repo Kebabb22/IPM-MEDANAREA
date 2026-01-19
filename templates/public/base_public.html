@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}PC IPM Medan Area{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="{% static 'images/logo-ipm.png' %}">
+
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+<!-- ================= NAVBAR ================= -->
+<header class="fixed top-0 w-full z-50 bg-white shadow">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+    <!-- LOGO -->
+    <div class="flex items-center gap-3">
+      <img src="{% static 'images/logo-ipm.png' %}" class="w-10 h-10 rounded-full" alt="Logo">
+      <a href="{% url 'home' %}" class="font-extrabold text-[#157347] text-lg">
+        PC IPM Medan Area
+      </a>
+    </div>
+
+    <!-- MENU DESKTOP -->
+    <nav class="hidden md:flex gap-8 text-sm font-medium text-[#157347]">
+
+      <!-- PROFIL -->
+      <div class="relative group">
+        <button class="hover:text-[#145A32] transition">Profil</button>
+        <div class="absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow
+                    opacity-0 invisible translate-y-1
+                    group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                    transition-all duration-200">
+          <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-green-50">Tentang Kami</a>
+          <a href="{% url 'struktur_organisasi' %}" class="block px-4 py-2 hover:bg-green-50">Struktur Organisasi</a>
+        </div>
+      </div>
+
+      <!-- SEPUTAR IPM -->
+      <div class="relative group">
+        <button class="hover:text-[#145A32] transition">Seputar IPM</button>
+        <div class="absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow
+                    opacity-0 invisible translate-y-1
+                    group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
+                    transition-all duration-200">
+          <a href="{% url 'berita' %}" class="block px-4 py-2 hover:bg-green-50">Berita</a>
+          <a href="{% url 'prestasi' %}" class="block px-4 py-2 hover:bg-green-50">Prestasi</a>
+          <a href="{% url 'galeri' %}" class="block px-4 py-2 hover:bg-green-50">Galeri</a>
+        </div>
+      </div>
+
+      <a href="{% url 'kontak' %}" class="hover:text-[#145A32] transition">Kontak</a>
+    </nav>
+
+    <!-- AUTH DESKTOP -->
+    <div class="hidden md:flex items-center gap-4 text-sm">
+      {% if user.is_authenticated %}
+
+        {% if is_editor %}
+          <a href="{% url 'editor_dashboard' %}"
+             class="font-semibold text-[#157347] hover:underline">
+            Dashboard
+          </a>
+        {% endif %}
+
+        <a href="{% url 'logout' %}"
+           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+          Logout
+        </a>
+
+      {% else %}
+        <a href="{% url 'login' %}"
+           class="bg-[#157347] hover:bg-[#145A32] text-white px-4 py-2 rounded-lg transition">
+          Login
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- MOBILE BUTTON -->
+    <button id="menu-btn" class="md:hidden text-2xl text-[#157347]">☰</button>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
+    <div class="px-6 py-4 space-y-3 text-sm">
+      <a href="{% url 'profil' %}" class="block">Profil</a>
+      <a href="{% url 'berita' %}" class="block">Berita</a>
+      <a href="{% url 'prestasi' %}" class="block">Prestasi</a>
+      <a href="{% url 'galeri' %}" class="block">Galeri</a>
+      <a href="{% url 'kontak' %}" class="block">Kontak</a>
+      <hr>
+      {% if user.is_authenticated %}
+        {% if is_editor %}
+          <a href="{% url 'editor_dashboard' %}" class="block font-semibold">Dashboard</a>
+        {% endif %}
+        <a href="{% url 'logout' %}" class="block text-red-600">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="block">Login</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- ================= CONTENT ================= -->
+<main class="pt-24">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-gradient-to-r from-[#0E6632] to-[#145A32] text-white py-8 mt-20">
+  <div class="text-center text-sm">
+    <h3 class="text-xl font-bold">
+      <span class="text-yellow-300">PC IPM</span> Medan Area
+    </h3>
+    <p class="mt-1 opacity-80">
+      © {{ now|date:"Y" }} PC IPM Medan Area
+    </p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menu-btn').onclick = () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  }
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

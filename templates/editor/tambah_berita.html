@@ -1,0 +1,93 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Tambah Berita{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl">
+
+  <!-- PAGE HEADER -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold">Tambah Berita</h1>
+    <p class="text-gray-500 mt-1">
+      Buat berita baru untuk diproses editor
+    </p>
+  </div>
+
+  <!-- FORM -->
+  <div class="bg-white rounded-xl shadow p-6">
+
+    <!-- 🔴 FORM HARUS SATU & PAKAI ENCTYPE -->
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- JUDUL -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Judul Berita
+        </label>
+        <input
+          type="text"
+          name="title"
+          required
+          placeholder="Masukkan judul berita"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2
+                 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        >
+      </div>
+
+      <!-- KONTEN -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Isi Berita
+        </label>
+        <textarea
+          name="content"
+          rows="8"
+          required
+          placeholder="Tulis isi berita di sini..."
+          class="w-full border border-gray-300 rounded-lg px-4 py-2
+                 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        ></textarea>
+      </div>
+
+      <!-- THUMBNAIL -->
+      <div>
+        <label class="block text-sm font-medium mb-1">
+          Thumbnail Berita
+        </label>
+        <input
+          type="file"
+          name="thumbnail"
+          accept="image/*"
+          class="w-full border border-gray-300 rounded-lg px-4 py-2"
+        >
+        <p class="text-xs text-gray-500 mt-1">
+          Format gambar: JPG, PNG (opsional)
+        </p>
+      </div>
+
+      <!-- ACTION -->
+      <div class="flex items-center gap-3">
+        <button
+          type="submit"
+          class="bg-[#FFC107] hover:bg-yellow-500 text-black
+                 font-medium px-6 py-2 rounded-lg"
+        >
+          Simpan sebagai Draft
+        </button>
+
+        <a
+          href="{% url 'editor_dashboard' %}"
+          class="px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-100"
+        >
+          Batal
+        </a>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}

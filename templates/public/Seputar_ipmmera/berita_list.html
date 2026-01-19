@@ -1,0 +1,70 @@
+{% extends "public/base_public.html" %}
+
+{% block title %}Berita{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="pt-32 pb-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+
+    <h1 class="text-4xl md:text-5xl font-extrabold text-[#157347] mb-4">
+      Berita
+    </h1>
+
+    <div class="w-24 h-1 mx-auto bg-[#FCD34D] rounded-full mb-6"></div>
+
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      Informasi dan kabar terbaru seputar kegiatan, gerakan,
+      dan dinamika PC IPM Medan Area.
+    </p>
+
+  </div>
+</section>
+
+<section class="pb-24 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    {% if posts %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+
+      {% for post in posts %}
+      <a href="{% url 'detail_berita' post.slug %}"
+         class="group relative bg-white rounded-2xl shadow hover:shadow-2xl transition overflow-hidden">
+
+        <!-- Decorative top bar -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#157347] to-[#FCD34D]"></div>
+
+        <div class="p-6 flex flex-col h-full">
+
+          <h2 class="font-bold text-lg mb-3 text-gray-900 group-hover:text-[#157347] transition">
+            {{ post.title }}
+          </h2>
+
+          <p class="text-sm text-gray-600 leading-relaxed flex-grow">
+            {{ post.content|truncatewords:24 }}
+          </p>
+
+          <div class="mt-6 flex items-center justify-between text-xs text-gray-400">
+            <span>{{ post.created_at|date:"d M Y" }}</span>
+            <span class="text-[#157347] font-medium group-hover:underline">
+              Baca →
+            </span>
+          </div>
+
+        </div>
+
+      </a>
+      {% endfor %}
+
+    </div>
+    {% else %}
+      <p class="text-center text-gray-500 py-20">
+        Belum ada berita yang dipublikasikan.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

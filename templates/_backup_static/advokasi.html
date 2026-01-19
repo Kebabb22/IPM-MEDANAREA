@@ -1,0 +1,167 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Bidang Advokasi{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="relative w-full h-[460px] md:h-[560px] overflow-hidden
+               rounded-b-[52px] md:rounded-b-[70px]
+               shadow-[0_30px_55px_-15px_rgba(0,0,0,0.4)]">
+
+  <img src="{% static 'images/fotobersama.png' %}"
+       alt="Kegiatan Bidang Advokasi IPM"
+       class="w-full h-full object-cover brightness-105 contrast-110">
+
+  <div class="absolute inset-0 bg-gradient-to-b
+              from-black/30 via-black/45 to-black/70"></div>
+
+  <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
+    <span class="text-sm uppercase tracking-widest text-white/80 mb-4">
+      Struktur Organisasi
+    </span>
+    <h1 class="text-white text-4xl md:text-5xl font-extrabold mb-5">
+      Bidang Advokasi
+    </h1>
+    <p class="text-white/90 text-lg max-w-2xl">
+      Mengawal hak, aspirasi, dan kepentingan pelajar
+      secara kritis dan solutif.
+    </p>
+  </div>
+</section>
+
+<!-- ================= BREADCRUMB + KEMBALI ================= -->
+<div class="max-w-6xl mx-auto px-6 mt-10 mb-14">
+  <nav class="text-sm text-gray-500 mb-4">
+    <ol class="flex flex-wrap items-center gap-2">
+      <li><a href="/" class="hover:text-[#157347]">Home</a></li>
+      <li>/</li>
+      <li><a href="/profil/" class="hover:text-[#157347]">Profil</a></li>
+      <li>/</li>
+      <li><a href="/profil/struktur-organisasi/" class="hover:text-[#157347]">Struktur Organisasi</a></li>
+      <li>/</li>
+      <li class="font-medium text-gray-700">Bidang Advokasi</li>
+    </ol>
+  </nav>
+
+  <a href="/profil/struktur-organisasi/"
+     class="inline-flex items-center gap-2 text-sm font-medium text-[#157347]">
+    ← Kembali ke Struktur Organisasi
+  </a>
+</div>
+
+
+<!-- ================= DESKRIPSI ================= -->
+<section class="pb-20 bg-white text-center px-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="w-24 h-1 mx-auto bg-[#FCD34D] rounded-full mb-8"></div>
+    <p class="text-gray-600 text-lg">
+      Bidang Advokasi berperan sebagai pengawal hak-hak pelajar,
+      penyampai aspirasi, serta pendamping dalam persoalan sosial,
+      pendidikan, dan kebijakan yang menyangkut dunia pelajar.
+    </p>
+  </div>
+</section>
+
+<!-- ================= STRUKTUR BIDANG ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Struktur Bidang
+    </h2>
+
+    <!-- Ketua & Sekretaris -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+
+      <div class="bg-white rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/ketua-bidang.jpg' %}"
+             class="w-full h-64 object-cover rounded-t-xl"
+             alt="Ketua Bidang">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Ahmad Fauzi</h3>
+          <p class="text-sm text-[#157347]">Ketua Bidang Perkaderan</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/sekretaris-bidang.jpg' %}"
+             class="w-full h-64 object-cover rounded-t-xl"
+             alt="Sekretaris Bidang">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Siti Rahma</h3>
+          <p class="text-sm text-[#157347]">Sekretaris Bidang Perkaderan</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Anggota Bidang -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota1.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Muhammad Rizki</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota2.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Nur Aisyah</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota3.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Fajar Hidayat</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow text-center">
+        <img src="{% static 'images/pengurus/anggota4.jpg' %}"
+             class="w-28 h-28 mx-auto rounded-full object-cover mb-3">
+        <h4 class="font-semibold text-sm">Dinda Safitri</h4>
+        <p class="text-xs text-gray-500">Anggota</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= TUJUAN & FOKUS ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Tujuan & Fokus Bidang
+    </h2>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white p-6 rounded-xl shadow">Pendampingan Kasus Pelajar</div>
+      <div class="bg-white p-6 rounded-xl shadow">Literasi Hukum & Kebijakan</div>
+      <div class="bg-white p-6 rounded-xl shadow">Penguatan Kesadaran Sosial</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROGRAM KERJA ================= -->
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
+      Program Kerja
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-gray-50 p-6 rounded-xl shadow">Klinik Advokasi Pelajar</div>
+      <div class="bg-gray-50 p-6 rounded-xl shadow">Forum Aspirasi Pelajar</div>
+      <div class="bg-gray-50 p-6 rounded-xl shadow">Diskusi Isu Sosial</div>
+      <div class="bg-gray-50 p-6 rounded-xl shadow">Kampanye Hak Pelajar</div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

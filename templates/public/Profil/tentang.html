@@ -1,0 +1,83 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Tentang Kami{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO PROFIL ================= -->
+<section class="pt-24 pb-12 bg-white text-center">
+  <div class="max-w-4xl mx-auto px-6">
+
+    <img src="{% static 'images/logo-ipm.png' %}"
+         alt="Logo IPM"
+         class="w-32 h-32 mx-auto rounded-full shadow mb-6">
+
+    <h1 class="text-4xl font-extrabold text-[#157347] mb-3">
+      Tentang Kami
+    </h1>
+
+    <div class="w-24 h-1 bg-[#FCD34D] mx-auto rounded-full mb-6"></div>
+
+    <p class="text-gray-600 leading-relaxed text-lg">
+      Ikatan Pelajar Muhammadiyah (IPM) Medan Area merupakan organisasi
+      pelajar Islam yang bergerak dalam dakwah, pendidikan, dan
+      pengembangan kepemimpinan pelajar.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= PROFIL SINGKAT ================= -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-[#157347] text-center mb-10">
+      Profil Singkat
+    </h2>
+
+    <p class="max-w-3xl mx-auto text-center text-gray-700 leading-relaxed">
+      PC IPM Medan Area hadir sebagai wadah pembinaan pelajar
+      untuk membentuk generasi yang beriman, berilmu, berakhlak,
+      serta memiliki kepedulian sosial tinggi sesuai nilai-nilai Muhammadiyah.
+    </p>
+
+  </div>
+</section>
+
+<!-- ================= VISI & MISI ================= -->
+<section class="py-16 bg-white">
+  <div class="max-w-5xl mx-auto px-6">
+
+    <h2 class="text-3xl font-bold text-[#157347] text-center mb-12">
+      Visi & Misi
+    </h2>
+
+    <!-- VISI -->
+    <div class="mb-10">
+      <h3 class="text-xl font-semibold text-[#157347] mb-3">
+        Visi
+      </h3>
+      <p class="text-gray-700 leading-relaxed">
+        Terbentuknya pelajar Islam yang berilmu, berakhlak mulia,
+        dan berperan aktif dalam mewujudkan masyarakat berkemajuan.
+      </p>
+    </div>
+
+    <!-- MISI -->
+    <div>
+      <h3 class="text-xl font-semibold text-[#157347] mb-3">
+        Misi
+      </h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li>Menanamkan nilai keislaman dan kemuhammadiyahan.</li>
+        <li>Mengembangkan potensi kepemimpinan pelajar.</li>
+        <li>Mendorong pelajar aktif dalam dakwah dan sosial.</li>
+        <li>Mewujudkan IPM yang progresif dan berkemajuan.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

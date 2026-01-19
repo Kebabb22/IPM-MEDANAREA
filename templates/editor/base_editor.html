@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard Editor{% endblock %}</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-[#FFC107] text-black px-6 py-4 flex justify-between items-center shadow z-50">
+
+  <div class="flex items-center gap-3 font-bold">
+    <div class="w-9 h-9 bg-black text-[#FFC107] rounded-lg flex items-center justify-center text-sm">
+      IPM
+    </div>
+    <span>Dashboard Editor</span>
+  </div>
+
+  <div class="flex items-center gap-4 text-sm">
+    <span class="hidden sm:inline">👤 {{ request.user.username }}</span>
+    <a href="{% url 'logout' %}" class="text-red-700 font-semibold hover:underline">
+      Logout
+    </a>
+  </div>
+</header>
+
+<!-- ================= LAYOUT ================= -->
+<div class="flex min-h-[calc(100vh-64px)]">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="w-64 bg-white border-r p-4 hidden md:block">
+
+    <nav class="space-y-1 text-sm">
+
+      <!-- DASHBOARD -->
+      <a href="{% url 'editor_dashboard' %}"
+         class="block px-4 py-2 rounded transition
+         {% if request.resolver_match.url_name == 'editor_dashboard' %}
+           bg-yellow-100 font-semibold
+         {% else %}
+           hover:bg-gray-100
+         {% endif %}">
+        📊 Dashboard
+      </a>
+
+      <!-- TAMBAH BERITA -->
+      {% if perms.blog.add_post %}
+      <a href="{% url 'tambah_berita' %}"
+         class="block px-4 py-2 rounded transition
+         {% if request.resolver_match.url_name == 'tambah_berita' %}
+           bg-yellow-100 font-semibold
+         {% else %}
+           hover:bg-gray-100
+         {% endif %}">
+        ✏️ Tambah Berita
+      </a>
+      {% endif %}
+
+      <!-- MODERASI -->
+      {% if perms.blog.change_post %}
+      <a href="{% url 'moderasi_berita' %}"
+         class="block px-4 py-2 rounded transition
+         {% if request.resolver_match.url_name == 'moderasi_berita' %}
+           bg-yellow-100 font-semibold
+         {% else %}
+           hover:bg-gray-100
+         {% endif %}">
+        🛡️ Moderasi Berita
+      </a>
+      {% endif %}
+
+      <!-- SEMUA BERITA (ADMIN) -->
+      {% if perms.blog.delete_post %}
+      <a href="{% url 'semua_berita' %}"
+         class="block px-4 py-2 rounded transition
+         {% if request.resolver_match.url_name == 'semua_berita' %}
+           bg-yellow-100 font-semibold
+         {% else %}
+           hover:bg-gray-100
+         {% endif %}">
+        🗂️ Semua Berita
+      </a>
+      {% endif %}
+
+      <!-- PRESTASI -->
+      {% if perms.blog.add_prestasi %}
+      <a href="{% url 'editor_prestasi' %}"
+         class="block px-4 py-2 rounded transition
+         {% if request.resolver_match.url_name == 'editor_prestasi' %}
+           bg-yellow-100 font-semibold
+         {% else %}
+           hover:bg-gray-100
+         {% endif %}">
+        🏆 Kelola Prestasi
+      </a>
+      {% endif %}
+      
+      {% if perms.blog.add_post %}
+    <li>
+    <a href="{% url 'editor_galeri' %}"
+        class="block px-3 py-2 rounded hover:bg-gray-100
+        {% if request.resolver_match.url_name == 'editor_galeri' %}
+        bg-yellow-100 font-semibold
+       {% endif %}">
+      🖼️ Kelola Galeri
+    </a>
+    </li>
+    {% endif %}
+
+
+      <!-- DIVIDER -->
+      <hr class="my-3">
+
+      <!-- ADMIN DJANGO -->
+      {% if request.user.is_superuser %}
+      <a href="/admin/"
+         class="block px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700">
+        ⚙️ Admin Django
+      </a>
+      {% endif %}
+
+    </nav>
+  </aside>
+
+  <!-- ================= CONTENT ================= -->
+  <main class="flex-1 p-6 md:p-8">
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

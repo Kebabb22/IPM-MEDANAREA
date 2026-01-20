@@ -1,8 +1,6 @@
 {% extends "editor/base_editor.html" %}
-{% load static %}
-
 {% block title %}
-  {% if mode == 'edit' %}Edit Prestasi{% else %}Tambah Prestasi{% endif %}
+  {% if prestasi %}Edit Prestasi{% else %}Tambah Prestasi{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -10,116 +8,142 @@
 <div class="max-w-3xl mx-auto">
 
   <!-- ================= HEADER ================= -->
-  <div class="mb-8">
-    <h1 class="text-3xl font-extrabold text-gray-900">
-      {% if mode == 'edit' %}
-        Edit Prestasi
-      {% else %}
-        Tambah Prestasi
-      {% endif %}
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold">
+      {% if prestasi %}Edit Prestasi{% else %}Tambah Prestasi{% endif %}
     </h1>
-
-    <div class="w-16 h-1 bg-[#E6B800] rounded-full mt-2"></div>
+    <p class="text-gray-500 text-sm">
+      Kelola data prestasi kader
+    </p>
   </div>
 
   <!-- ================= FORM ================= -->
-  <form method="post" enctype="multipart/form-data"
-        class="bg-white p-8 rounded-xl shadow space-y-6">
+  <form method="post"
+        enctype="multipart/form-data"
+        class="bg-white rounded-xl shadow p-6 space-y-5">
+
     {% csrf_token %}
 
-    <!-- Nama -->
+    <!-- NAMA -->
     <div>
-      <label class="block text-sm font-semibold mb-1">
-        Nama Lengkap
+      <label class="block text-sm font-medium mb-1">
+        Nama Prestasi
       </label>
-      <input type="text" name="nama" required
+      <input type="text"
+             name="nama"
              value="{{ prestasi.nama|default:'' }}"
-             class="w-full rounded-lg border-gray-300 focus:ring-[#E6B800] focus:border-[#E6B800]">
+             required
+             class="w-full border rounded-lg px-4 py-2">
     </div>
 
-    <!-- Capaian -->
+    <!-- CAPAIAN -->
     <div>
-      <label class="block text-sm font-semibold mb-1">
-        Prestasi / Capaian
+      <label class="block text-sm font-medium mb-1">
+        Capaian
       </label>
-      <input type="text" name="capaian" required
+      <input type="text"
+             name="capaian"
              value="{{ prestasi.capaian|default:'' }}"
-             class="w-full rounded-lg border-gray-300 focus:ring-[#E6B800] focus:border-[#E6B800]">
+             required
+             class="w-full border rounded-lg px-4 py-2">
     </div>
 
-    <!-- Bidang -->
+    <!-- BIDANG -->
     <div>
-      <label class="block text-sm font-semibold mb-1">
+      <label class="block text-sm font-medium mb-1">
         Bidang
       </label>
       <select name="bidang"
-              class="w-full rounded-lg border-gray-300 focus:ring-[#E6B800] focus:border-[#E6B800]">
+              class="w-full border rounded-lg px-4 py-2">
         <option value="">— Pilih Bidang —</option>
         {% for b in bidang_list %}
           <option value="{{ b.id }}"
-            {% if prestasi.bidang.id == b.id %}selected{% endif %}>
+            {% if prestasi and prestasi.bidang and prestasi.bidang.id == b.id %}
+              selected
+            {% endif %}>
             {{ b.nama }}
           </option>
         {% endfor %}
       </select>
     </div>
 
-    <!-- Tingkat & Tahun -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-      <div>
-        <label class="block text-sm font-semibold mb-1">
-          Tingkat
-        </label>
-        <select name="tingkat" required
-                class="w-full rounded-lg border-gray-300 focus:ring-[#E6B800] focus:border-[#E6B800]">
-          <option value="lokal" {% if prestasi.tingkat == 'lokal' %}selected{% endif %}>Lokal</option>
-          <option value="daerah" {% if prestasi.tingkat == 'daerah' %}selected{% endif %}>Daerah</option>
-          <option value="nasional" {% if prestasi.tingkat == 'nasional' %}selected{% endif %}>Nasional</option>
-          <option value="internasional" {% if prestasi.tingkat == 'internasional' %}selected{% endif %}>Internasional</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-sm font-semibold mb-1">
-          Tahun
-        </label>
-        <input type="number" name="tahun" required
-               value="{{ prestasi.tahun|default:'' }}"
-               class="w-full rounded-lg border-gray-300 focus:ring-[#E6B800] focus:border-[#E6B800]">
-      </div>
-
+    <!-- TINGKAT -->
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        Tingkat
+      </label>
+      <select name="tingkat"
+              required
+              class="w-full border rounded-lg px-4 py-2">
+        <option value="lokal"
+          {% if prestasi.tingkat == 'lokal' %}selected{% endif %}>
+          Lokal
+        </option>
+        <option value="daerah"
+          {% if prestasi.tingkat == 'daerah' %}selected{% endif %}>
+          Daerah
+        </option>
+        <option value="nasional"
+          {% if prestasi.tingkat == 'nasional' %}selected{% endif %}>
+          Nasional
+        </option>
+        <option value="internasional"
+          {% if prestasi.tingkat == 'internasional' %}selected{% endif %}>
+          Internasional
+        </option>
+      </select>
     </div>
 
-    <!-- Foto -->
+    <!-- TAHUN -->
     <div>
-      <label class="block text-sm font-semibold mb-1">
+      <label class="block text-sm font-medium mb-1">
+        Tahun
+      </label>
+      <input type="number"
+             name="tahun"
+             value="{{ prestasi.tahun|default:'' }}"
+             required
+             class="w-full border rounded-lg px-4 py-2">
+    </div>
+
+    <!-- KETERANGAN -->
+    <div>
+      <label class="block text-sm font-medium mb-1">
+        Keterangan
+      </label>
+      <textarea name="keterangan"
+                rows="3"
+                class="w-full border rounded-lg px-4 py-2">{{ prestasi.keterangan|default:'' }}</textarea>
+    </div>
+
+    <!-- FOTO -->
+    <div>
+      <label class="block text-sm font-medium mb-1">
         Foto Prestasi
       </label>
 
-      {% if prestasi.foto %}
+      {% if prestasi and prestasi.foto %}
         <img src="{{ prestasi.foto.url }}"
-             class="h-32 mb-3 rounded-lg object-cover">
+             class="w-32 h-32 object-cover rounded-lg mb-3">
       {% endif %}
 
-      <input type="file" name="foto"
-             class="block w-full text-sm text-gray-500">
+      <input type="file"
+             name="foto"
+             class="w-full border rounded-lg px-4 py-2">
     </div>
 
     <!-- ACTION -->
-    <div class="flex items-center justify-between pt-6 border-t">
-
+    <div class="flex justify-end gap-3 pt-4">
       <a href="{% url 'editor_prestasi' %}"
-         class="text-gray-600 hover:underline">
-        ← Kembali
+         class="px-5 py-2 rounded-lg border hover:bg-gray-100">
+        Batal
       </a>
 
       <button type="submit"
-              class="bg-[#E6B800] hover:bg-yellow-500 text-black
-                     font-semibold px-6 py-2 rounded-lg transition">
-        {% if mode == 'edit' %}Simpan Perubahan{% else %}Simpan Prestasi{% endif %}
+              class="bg-[#157347] hover:bg-[#145A32]
+                     text-white font-semibold px-6 py-2 rounded-lg">
+        Simpan
       </button>
-
     </div>
 
   </form>

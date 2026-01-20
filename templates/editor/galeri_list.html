@@ -3,73 +3,57 @@
 
 {% block content %}
 
-<div class="max-w-7xl mx-auto">
+<div class="max-w-7xl">
 
   <!-- ================= HEADER ================= -->
-  <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
     <div>
-      <h1 class="text-2xl font-bold">Kelola Galeri</h1>
-      <p class="text-gray-500 text-sm mt-1">
-        Manajemen foto kegiatan & dokumentasi
+      <h1 class="text-2xl font-bold text-gray-800">
+        Kelola Galeri
+      </h1>
+      <p class="text-sm text-gray-500">
+        Kelola dokumentasi foto kegiatan
       </p>
     </div>
 
     <a href="{% url 'tambah_galeri' %}"
-       class="mt-4 md:mt-0 inline-flex items-center gap-2
-              bg-[#FFC107] hover:bg-yellow-500 text-black
-              font-semibold px-5 py-2 rounded-lg transition">
-      + Tambah Galeri
+       class="inline-flex items-center gap-2
+              bg-[#FFC107] hover:bg-yellow-500
+              text-black font-semibold
+              px-5 py-2 rounded-lg transition">
+      <span class="text-lg">＋</span>
+      Tambah Galeri
     </a>
   </div>
-
-  <!-- ================= FILTER ================= -->
-  <form method="get" class="mb-6">
-    <div class="flex items-center gap-3">
-      <label class="text-sm text-gray-600">Filter Kategori:</label>
-      <select name="kategori"
-              onchange="this.form.submit()"
-              class="border border-gray-300 rounded-lg px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-yellow-400">
-        <option value="">Semua Kategori</option>
-        {% for k in kategori_list %}
-          <option value="{{ k.id }}"
-            {% if kategori_aktif == k.id|stringformat:"s" %}selected{% endif %}>
-            {{ k.nama }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
-  </form>
 
   <!-- ================= GALERI GRID ================= -->
   {% if galeri_list %}
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
     {% for g in galeri_list %}
-    <div class="bg-white rounded-2xl shadow hover:shadow-lg
-                transition overflow-hidden group">
+    <div class="group bg-white rounded-xl shadow
+                hover:shadow-lg transition overflow-hidden">
 
-      <!-- FOTO -->
-      <div class="relative aspect-square overflow-hidden">
+      <!-- IMAGE -->
+      <div class="relative">
         <img
           src="{{ g.foto.url }}"
           alt="{{ g.judul }}"
-          class="w-full h-full object-cover
-                 group-hover:scale-105 transition duration-300"
-        >
+          class="w-full h-40 object-cover">
 
-        <!-- OVERLAY ACTION -->
+        <!-- ACTION OVERLAY -->
         <form method="post"
               action="{% url 'hapus_galeri' g.id %}"
               class="absolute inset-0 bg-black/60
                      flex items-center justify-center
-                     opacity-0 group-hover:opacity-100 transition">
+                     opacity-0 group-hover:opacity-100
+                     transition">
           {% csrf_token %}
           <button
             type="submit"
-            onclick="return confirm('Yakin hapus foto ini?')"
+            onclick="return confirm('Yakin ingin menghapus foto ini?')"
             class="bg-red-600 hover:bg-red-700
-                   text-white text-sm font-semibold
+                   text-white text-sm
                    px-4 py-2 rounded-lg">
             Hapus
           </button>
@@ -78,10 +62,10 @@
 
       <!-- INFO -->
       <div class="p-3">
-        <p class="text-sm font-semibold truncate">
+        <p class="text-sm font-semibold text-gray-800 truncate">
           {{ g.judul }}
         </p>
-        <p class="text-xs text-gray-500 mt-0.5">
+        <p class="text-xs text-gray-500">
           {{ g.kategori.nama }}
         </p>
       </div>
@@ -91,7 +75,7 @@
 
   </div>
   {% else %}
-    <div class="bg-white rounded-xl p-6 text-center text-gray-500 text-sm">
+    <div class="bg-white rounded-xl shadow p-10 text-center text-gray-500">
       Belum ada galeri yang ditambahkan.
     </div>
   {% endif %}

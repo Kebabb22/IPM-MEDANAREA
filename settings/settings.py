@@ -39,7 +39,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
- #'   'blog.middleware.EditorRedirectMiddleware',
+ # 'blog.middleware.EditorRedirectMiddleware',
 ]
 
 

@@ -8,6 +8,7 @@
   <title>{% block title %}PC IPM Medan Area{% endblock %}</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+
   <link rel="icon" href="{% static 'images/logo-ipm.png' %}">
 
   <style>
@@ -31,7 +32,7 @@
       </a>
     </div>
 
-    <!-- MENU DESKTOP -->
+    <!-- ================= DESKTOP MENU ================= -->
     <nav class="hidden md:flex gap-8 text-sm font-medium text-[#157347]">
 
       <!-- PROFIL -->
@@ -41,8 +42,16 @@
                     opacity-0 invisible translate-y-1
                     group-hover:opacity-100 group-hover:visible group-hover:translate-y-0
                     transition-all duration-200">
-          <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-green-50">Tentang Kami</a>
-          <a href="{% url 'struktur_organisasi' %}" class="block px-4 py-2 hover:bg-green-50">Struktur Organisasi</a>
+          <a href="{% url 'profil' %}" class="block px-4 py-2 hover:bg-green-50">
+            Tentang Kami
+          </a>
+          <a href="{% url 'struktur_organisasi' %}" class="block px-4 py-2 hover:bg-green-50">
+            Struktur Organisasi
+          </a>
+          <a href="{% url 'profil_pengelola' %}" class="block px-4 py-2 hover:bg-green-50">
+            Pengelola Website
+          </a>
+
         </div>
       </div>
 
@@ -59,25 +68,30 @@
         </div>
       </div>
 
-      <a href="{% url 'kontak' %}" class="hover:text-[#145A32] transition">Kontak</a>
+      <!-- DONASI -->
+      <a href="{% url 'donasi' %}" class="hover:text-[#145A32] transition font-semibold">
+        Donasi
+      </a>
+
+      <!-- KONTAK -->
+      <a href="{% url 'kontak' %}" class="hover:text-[#145A32] transition">
+        Kontak
+      </a>
     </nav>
 
-    <!-- AUTH DESKTOP -->
+    <!-- ================= AUTH DESKTOP ================= -->
     <div class="hidden md:flex items-center gap-4 text-sm">
       {% if user.is_authenticated %}
-
         {% if is_editor %}
           <a href="{% url 'editor_dashboard' %}"
              class="font-semibold text-[#157347] hover:underline">
             Dashboard
           </a>
         {% endif %}
-
         <a href="{% url 'logout' %}"
            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
           Logout
         </a>
-
       {% else %}
         <a href="{% url 'login' %}"
            class="bg-[#157347] hover:bg-[#145A32] text-white px-4 py-2 rounded-lg transition">
@@ -87,26 +101,65 @@
     </div>
 
     <!-- MOBILE BUTTON -->
-    <button id="menu-btn" class="md:hidden text-2xl text-[#157347]">☰</button>
+    <button id="menu-btn" class="md:hidden text-2xl text-[#157347]">
+      ☰
+    </button>
   </div>
 
-  <!-- MOBILE MENU -->
+  <!-- ================= MOBILE DROPDOWN ================= -->
   <div id="mobile-menu" class="hidden md:hidden border-t bg-white">
-    <div class="px-6 py-4 space-y-3 text-sm">
-      <a href="{% url 'profil' %}" class="block">Profil</a>
-      <a href="{% url 'berita' %}" class="block">Berita</a>
-      <a href="{% url 'prestasi' %}" class="block">Prestasi</a>
-      <a href="{% url 'galeri' %}" class="block">Galeri</a>
-      <a href="{% url 'kontak' %}" class="block">Kontak</a>
+    <div class="px-6 py-4 space-y-4 text-sm">
+
+      <!-- PROFIL -->
+      <div>
+        <button onclick="toggleSub('profil-sub')"
+                class="w-full flex justify-between items-center font-semibold">
+          Profil <span>▼</span>
+        </button>
+        <div id="profil-sub" class="hidden pl-4 mt-2 space-y-2">
+          <a href="{% url 'profil' %}" class="block">Tentang Kami</a>
+          <a href="{% url 'struktur_organisasi' %}" class="block">Struktur Organisasi</a>
+          <a href="{% url 'profil_pengelola' %}" class="block">Pengelola Website </a>
+
+        </div>
+      </div>
+
+      <!-- SEPUTAR IPM -->
+      <div>
+        <button onclick="toggleSub('ipm-sub')"
+                class="w-full flex justify-between items-center font-semibold">
+          Seputar IPM <span>▼</span>
+        </button>
+        <div id="ipm-sub" class="hidden pl-4 mt-2 space-y-2">
+          <a href="{% url 'berita' %}" class="block">Berita</a>
+          <a href="{% url 'prestasi' %}" class="block">Prestasi</a>
+          <a href="{% url 'galeri' %}" class="block">Galeri</a>
+        </div>
+      </div>
+
+      <!-- DONASI -->
+      <a href="{% url 'donasi' %}" class="block font-semibold text-[#157347]">
+        Donasi
+      </a>
+
+      <!-- KONTAK -->
+      <a href="{% url 'kontak' %}" class="block font-semibold">
+        Kontak
+      </a>
+
       <hr>
+
       {% if user.is_authenticated %}
         {% if is_editor %}
-          <a href="{% url 'editor_dashboard' %}" class="block font-semibold">Dashboard</a>
+          <a href="{% url 'editor_dashboard' %}" class="block font-semibold">
+            Dashboard
+          </a>
         {% endif %}
         <a href="{% url 'logout' %}" class="block text-red-600">Logout</a>
       {% else %}
         <a href="{% url 'login' %}" class="block">Login</a>
       {% endif %}
+
     </div>
   </div>
 </header>
@@ -117,21 +170,299 @@
 </main>
 
 <!-- ================= FOOTER ================= -->
-<footer class="bg-gradient-to-r from-[#0E6632] to-[#145A32] text-white py-8 mt-20">
-  <div class="text-center text-sm">
-    <h3 class="text-xl font-bold">
-      <span class="text-yellow-300">PC IPM</span> Medan Area
-    </h3>
-    <p class="mt-1 opacity-80">
-      © {{ now|date:"Y" }} PC IPM Medan Area
-    </p>
+<footer class="bg-[#0E6632] text-white mt-24">
+
+  <div class="max-w-6xl mx-auto px-6 py-12">
+
+    <div class="grid md:grid-cols-3 gap-10">
+
+      <!-- LOGO + IDENTITAS -->
+      <div class="flex items-start gap-4">
+
+        <img src="{% static 'images/logo-ipm.png' %}"
+             class="w-14 h-14 rounded-full shadow-lg">
+
+        <div>
+          <h3 class="text-lg font-semibold">
+            PC IPM Medan Area
+          </h3>
+
+          <p class="text-sm text-green-200 mt-1 leading-relaxed">
+            Pimpinan Cabang Ikatan Pelajar Muhammadiyah Medan Area
+            yang bergerak membangun pelajar berkemajuan
+            dan memberikan dampak bagi masyarakat.
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- AKSES CEPAT -->
+      <div>
+
+        <h4 class="text-sm font-semibold mb-5 text-green-200">
+          Akses Cepat
+        </h4>
+
+        <div class="flex flex-col gap-3 text-sm">
+
+          <a href="{% url 'profil' %}" class="group relative w-fit">
+            Tentang Kami
+            <span class="absolute left-0 -bottom-1 h-[2px] w-0 bg-yellow-300 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+
+          <a href="{% url 'struktur_organisasi' %}" class="group relative w-fit">
+            Struktur Organisasi
+            <span class="absolute left-0 -bottom-1 h-[2px] w-0 bg-yellow-300 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+
+          <a href="{% url 'berita' %}" class="group relative w-fit">
+            Berita
+            <span class="absolute left-0 -bottom-1 h-[2px] w-0 bg-yellow-300 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+
+          <a href="{% url 'galeri' %}" class="group relative w-fit">
+            Galeri
+            <span class="absolute left-0 -bottom-1 h-[2px] w-0 bg-yellow-300 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- MEDIA SOSIAL -->
+      <div>
+
+        <h4 class="text-sm font-semibold mb-5 text-green-200">
+          Media Sosial
+        </h4>
+
+        <div class="flex gap-4 mb-6">
+
+          <!-- INSTAGRAM -->
+          <a href="https://www.instagram.com/ipmmedanarea/"
+             target="_blank"
+             class="w-11 h-11 flex items-center justify-center
+                    rounded-lg bg-white/10 backdrop-blur
+                    hover:bg-pink-500 hover:scale-110
+                    transition-all duration-300 shadow">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+            width="18" height="18"
+            fill="currentColor"
+            viewBox="0 0 24 24">
+            <path d="M7.5 2C4.46 2 2 4.46 2 7.5v9C2
+            19.54 4.46 22 7.5 22h9c3.04 0
+            5.5-2.46 5.5-5.5v-9C22
+            4.46 19.54 2 16.5 2h-9zm4.5
+            5a5 5 0 110 10 5 5 0
+            010-10zm0 2a3 3 0 100
+            6 3 3 0 000-6zm5.25-.9a1.15
+            1.15 0 110 2.3 1.15 1.15 0
+            010-2.3z"/>
+            </svg>
+
+          </a>
+
+
+          <!-- YOUTUBE -->
+          <a href="https://www.youtube.com/@IPMMedanArea"
+             target="_blank"
+             class="w-11 h-11 flex items-center justify-center
+                    rounded-lg bg-white/10 backdrop-blur
+                    hover:bg-red-500 hover:scale-110
+                    transition-all duration-300 shadow">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+            width="18" height="18"
+            fill="currentColor"
+            viewBox="0 0 24 24">
+            <path d="M23.5 6.2a3 3 0
+            00-2.1-2.1C19.5 3.5 12
+            3.5 12 3.5s-7.5 0-9.4.6A3
+            3 0 00.5 6.2 31 31 0
+            000 12a31 31 0 00.5
+            5.8 3 3 0 002.1
+            2.1c1.9.6 9.4.6
+            9.4.6s7.5 0 9.4-.6a3
+            3 0 002.1-2.1A31 31
+            0 0024 12a31 31 0
+            00-.5-5.8zM9.8
+            15.5V8.5l6.2
+            3.5-6.2 3.5z"/>
+            </svg>
+
+          </a>
+
+
+          <!-- TIKTOK -->
+          <a href="https://www.tiktok.com/@ipmmedanarea?_r=1&_t=ZS-94bn9j579B1"
+             target="_blank"
+             class="w-11 h-11 flex items-center justify-center
+                    rounded-lg bg-white/10 backdrop-blur
+                    hover:bg-black hover:scale-110
+                    transition-all duration-300 shadow">
+
+            TT
+
+          </a>
+
+        </div>
+
+
+        <!-- ALAMAT -->
+        <div class="text-sm text-green-200 leading-relaxed">
+
+          <p class="font-semibold mb-1">
+            Sekretariat
+          </p>
+
+          <p>
+            Jalan Puri, Jl. Puri No.183<br>
+            Medan Area<br>
+            Lantai 2
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+
+
+  <!-- COPYRIGHT -->
+  <div class="border-t border-green-700 text-center py-6 text-base font-medium text-green-200">
+    © {{ now|date:"Y" }} PC IPM Medan Area
+  </div>
+
 </footer>
 
+<!-- ================= SCRIPT ================= -->
 <script>
-  document.getElementById('menu-btn').onclick = () => {
-    document.getElementById('mobile-menu').classList.toggle('hidden');
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  const subMenus = ['profil-sub', 'ipm-sub'];
+
+  function closeAllSubMenus() {
+    subMenus.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.classList.contains('hidden')) {
+        el.classList.add('hidden');
+      }
+    });
   }
+
+  menuBtn.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+
+    if (!isHidden) {
+      closeAllSubMenus();
+    }
+  });
+
+  function toggleSub(id) {
+    const target = document.getElementById(id);
+    const willOpen = target.classList.contains('hidden');
+
+    closeAllSubMenus();
+
+    if (willOpen) {
+      target.classList.remove('hidden');
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+      closeAllSubMenus();
+    }
+  });
+
+  mobileMenu.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      mobileMenu.classList.add('hidden');
+      closeAllSubMenus();
+    }
+  });
+</script>
+<script>
+/* =====================================================
+   GLOBAL AJAX PAGINATION
+   ===================================================== */
+document.addEventListener('click', function (e) {
+  const link = e.target.closest('a[data-ajax]');
+  if (!link) return;
+
+  const container = document.querySelector(
+    link.closest('[data-pagination]')?.dataset.ajaxContainer
+  );
+
+  if (!container) return;
+
+  e.preventDefault();
+  loadAjaxPage(link.href, container);
+});
+
+function loadAjaxPage(url, container) {
+  // Loading state
+  container.classList.add('opacity-50', 'pointer-events-none');
+
+  fetch(url, {
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(res => res.text())
+  .then(html => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    const newContent = doc.querySelector('#ajax-container');
+    const newPagination = doc.querySelector('[data-pagination]');
+
+    if (!newContent) {
+      window.location.href = url;
+      return;
+    }
+
+    // Replace content
+    container.innerHTML = newContent.innerHTML;
+
+    // Replace pagination
+    const oldPagination = document.querySelector('[data-pagination]');
+    if (oldPagination && newPagination) {
+      oldPagination.replaceWith(newPagination);
+    }
+
+    // Update URL
+    window.history.pushState({}, '', url);
+
+    // Scroll ke atas konten
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })
+  .catch(() => {
+    window.location.href = url;
+  })
+  .finally(() => {
+    container.classList.remove('opacity-50', 'pointer-events-none');
+  });
+}
+
+/* =====================================================
+   HANDLE BACK / FORWARD BUTTON
+   ===================================================== */
+window.addEventListener('popstate', function () {
+  const container = document.querySelector('#ajax-container');
+  if (!container) return;
+
+  loadAjaxPage(window.location.href, container);
+});
 </script>
 
 {% block extra_js %}{% endblock %}

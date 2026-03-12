@@ -113,7 +113,10 @@ DEFAULT_FROM_EMAIL = 'no-reply@pcipm-medanarea.id'
 # ======================
 # AUTH REDIRECT (WAJIB)
 # ======================
+# ======================
+# AUTH REDIRECT (FINAL)
+# ======================
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/editor/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 

@@ -1,11 +1,11 @@
 {% extends "public/base_public.html" %}
 {% load static %}
 
-{% block title %}Kontak{% endblock %}
+{% block title %}Kontak | PC IPM Medan Area{% endblock %}
 
 {% block content %}
 
-<!-- ================= HERO ================= -->
+<!-- HERO -->
 <section class="pt-28 pb-16 bg-white">
   <div class="max-w-4xl mx-auto px-6 text-center">
 
@@ -17,236 +17,353 @@
     <div class="w-24 h-1 mx-auto bg-gradient-to-r from-[#157347] to-[#FACC15] rounded-full mb-6"></div>
 
     <p class="text-gray-600 text-lg leading-relaxed">
-      Kami terbuka untuk komunikasi, kolaborasi, dan aspirasi.
-      Silakan hubungi PC IPM Medan Area melalui jalur resmi berikut.
+      Kami terbuka untuk komunikasi, kolaborasi, serta aspirasi dari berbagai pihak.
+      Silakan menghubungi PC IPM Medan Area melalui jalur resmi berikut.
     </p>
 
   </div>
 </section>
 
-<!-- ================= CONTENT ================= -->
+
+<!-- CONTENT -->
 <section class="py-16 bg-gray-50">
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
 
-    <!-- ========== INFO KONTAK ========== -->
-    <div>
+<div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
 
-      <h2 class="text-2xl font-bold text-[#157347] mb-6">
-        Informasi Kontak
-      </h2>
 
-      <ul class="space-y-6 text-gray-700">
+<!-- ================= INFORMASI KONTAK ================= -->
+<div>
 
-        <li class="flex items-start gap-4">
-          <div class="text-[#157347] text-xl">📍</div>
-          <div>
-            <p class="font-semibold">Alamat Sekretariat</p>
-            <p class="text-sm">
-              Jl. Puri No.183, Medan Area<br>
-              Lantai 2
-            </p>
-          </div>
-        </li>
+<h2 class="text-2xl font-bold text-[#157347] mb-6">
+Informasi Kontak
+</h2>
 
-        <li class="flex items-start gap-4">
-          <div class="text-[#157347] text-xl">📧</div>
-          <div>
-            <p class="font-semibold">Email</p>
-            <p class="text-sm">
-              pcipmmedanarea@gmail.com
-            </p>
-          </div>
-        </li>
 
-        <li class="flex items-start gap-4">
-          <div class="text-[#157347] text-xl">🕘</div>
-          <div>
-            <p class="font-semibold">Jam Layanan</p>
-            <p class="text-sm">
-              Setiap hari: 09.00 – 19.00 WIB<br>
-              <span class="text-red-600 font-semibold">
-                Jumat istirahat: 12.00 – 14.00 WIB
-              </span>
-            </p>
-          </div>
-        </li>
+<ul class="space-y-6 text-gray-700">
 
-      </ul>
+<!-- ALAMAT -->
+<li class="flex gap-4 items-start">
 
-      <div class="mt-10 p-5 bg-white rounded-xl shadow text-sm text-gray-600">
-        <p class="font-semibold text-[#157347] mb-2">
-          Catatan
-        </p>
-        <p>
-          Pesan WhatsApp di luar jam layanan atau saat istirahat Jumat
-          tetap dapat dikirim dan akan ditindak lanjuti pada jam kerja berikutnya.
-        </p>
-      </div>
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-lg text-[#157347]">
+📍
+</div>
 
-    </div>
+<div>
 
-    <!-- ========== WHATSAPP + FORM ========== -->
-    <div class="bg-white rounded-2xl shadow-lg p-8">
+<p class="font-semibold">
+Alamat Sekretariat
+</p>
 
-      <h2 class="text-2xl font-bold text-[#157347] mb-2">
-        Hubungi via WhatsApp
-      </h2>
+<p class="text-sm text-gray-600 leading-relaxed">
+Jl. Puri No.183<br>
+Kota Matsum I, Kec. Medan Area<br>
+Kota Medan, Sumatera Utara 20211
+</p>
 
-      <p class="text-sm text-gray-600 mb-4">
-        Jalur komunikasi tercepat kami.
-      </p>
+<a href="https://maps.google.com/?q=Jl.+Puri+No.183,+Kota+Matsum+I,+Medan+Area,+Medan"
+target="_blank"
+class="inline-block mt-2 text-sm text-[#157347] font-semibold hover:underline">
+Buka di Google Maps →
+</a>
 
-      <!-- BADGE STATUS -->
-      <div id="statusBadge"
-           class="inline-flex items-center gap-2 text-sm font-semibold
-                  px-4 py-2 rounded-full mb-6">
-        <span id="statusDot" class="w-2.5 h-2.5 rounded-full"></span>
-        <span id="statusText"></span>
-      </div>
+</div>
 
-      <!-- WHATSAPP BUTTON -->
-      <a id="waButton"
-         href="#"
-         target="_blank"
-         class="flex items-center justify-center gap-3
-                bg-green-600 hover:bg-green-700
-                text-white font-semibold py-3 rounded-xl
-                transition mb-8">
-        💬 Hubungi via WhatsApp
-      </a>
+</li>
 
-      <div class="relative my-6 text-center">
-        <span class="text-xs bg-white px-3 text-gray-500">
-          atau kirim pesan tertulis
-        </span>
-        <div class="absolute inset-x-0 top-1/2 h-px bg-gray-200 -z-10"></div>
-      </div>
 
-      <!-- FORM -->
-      <form id="waForm" class="space-y-5">
+<!-- EMAIL -->
+<li class="flex gap-4 items-start">
 
-        <div>
-          <label class="block text-sm font-medium mb-1">
-            Nama
-          </label>
-          <input type="text" id="nama"
-                 class="w-full border border-gray-300 rounded-lg px-4 py-2
-                        focus:outline-none focus:ring-2 focus:ring-[#157347]"
-                 required>
-        </div>
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-lg text-[#157347]">
+📧
+</div>
 
-        <div>
-          <label class="block text-sm font-medium mb-1">
-            Asal / Instansi
-          </label>
-          <input type="text" id="asal"
-                 class="w-full border border-gray-300 rounded-lg px-4 py-2
-                        focus:outline-none focus:ring-2 focus:ring-[#157347]">
-        </div>
+<div>
 
-        <div>
-          <label class="block text-sm font-medium mb-1">
-            Pesan
-          </label>
-          <textarea id="pesan" rows="4"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-2
-                           focus:outline-none focus:ring-2 focus:ring-[#157347]"
-                    required></textarea>
-        </div>
+<p class="font-semibold">
+Email
+</p>
 
-        <button type="submit"
-                class="w-full bg-[#157347] hover:bg-[#145A32]
-                       text-white py-3 rounded-lg font-semibold transition">
-          Kirim via WhatsApp
-        </button>
+<p class="text-sm text-gray-600">
+pcipmmedanarea@gmail.com
+</p>
 
-      </form>
+</div>
 
-    </div>
+</li>
 
-  </div>
+
+<!-- JAM LAYANAN -->
+<li class="flex gap-4 items-start">
+
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-lg text-[#157347]">
+🕘
+</div>
+
+<div>
+
+<p class="font-semibold">
+Jam Layanan
+</p>
+
+<p class="text-sm text-gray-600">
+Setiap hari: 09.00 – 19.00 WIB
+</p>
+
+<p class="text-sm text-red-600 font-semibold">
+Istirahat Jumat: 12.00 – 14.00 WIB
+</p>
+
+</div>
+
+</li>
+
+</ul>
+
+
+
+<!-- MEDIA SOSIAL -->
+<div class="mt-8">
+
+<p class="font-semibold text-[#157347] mb-3">
+Media Sosial
+</p>
+
+<div class="flex gap-3">
+
+<a href="https://www.instagram.com/ipmmedanarea/"
+target="_blank"
+class="px-4 py-2 bg-pink-500 text-white text-sm rounded-lg hover:bg-pink-600 transition">
+Instagram
+</a>
+
+<a href="https://www.youtube.com/@IPMMedanArea"
+target="_blank"
+class="px-4 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition">
+YouTube
+</a>
+
+<a href="https://www.tiktok.com/@ipmmedanarea"
+target="_blank"
+class="px-4 py-2 bg-black text-white text-sm rounded-lg hover:bg-gray-800 transition">
+TikTok
+</a>
+
+</div>
+
+</div>
+
+
+
+<!-- GOOGLE MAP -->
+<div class="mt-8">
+
+<p class="font-semibold text-[#157347] mb-3">
+Lokasi Sekretariat
+</p>
+
+<div class="rounded-xl overflow-hidden shadow">
+
+<iframe
+src="https://www.google.com/maps?q=Jl.+Puri+No.183,+Kota+Matsum+I,+Medan+Area,+Medan&output=embed"
+width="100%"
+height="300"
+style="border:0;"
+allowfullscreen=""
+loading="lazy">
+</iframe>
+
+</div>
+
+</div>
+
+
+
+<div class="mt-8 p-5 bg-white rounded-xl shadow text-sm text-gray-600">
+
+<p class="font-semibold text-[#157347] mb-2">
+Catatan
+</p>
+
+<p>
+Pesan WhatsApp yang dikirim di luar jam layanan tetap dapat dikirim
+dan akan ditindaklanjuti pada jam kerja berikutnya.
+</p>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= WHATSAPP ================= -->
+<div class="bg-white rounded-2xl shadow-lg p-8">
+
+<h2 class="text-2xl font-bold text-[#157347] mb-2">
+Hubungi via WhatsApp
+</h2>
+
+<p class="text-sm text-gray-600 mb-4">
+WhatsApp merupakan jalur komunikasi tercepat kami.
+</p>
+
+
+<!-- STATUS -->
+<div id="statusBadge"
+class="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full mb-6">
+
+<span id="statusDot" class="w-2.5 h-2.5 rounded-full"></span>
+<span id="statusText"></span>
+
+</div>
+
+
+<a id="waButton"
+href="#"
+target="_blank"
+class="flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition mb-8">
+
+💬 Hubungi via WhatsApp
+
+</a>
+
+
+
+<div class="relative my-6 text-center">
+
+<span class="text-xs bg-white px-3 text-gray-500">
+atau kirim pesan tertulis
+</span>
+
+<div class="absolute inset-x-0 top-1/2 h-px bg-gray-200 -z-10"></div>
+
+</div>
+
+
+
+<form id="waForm" class="space-y-5">
+
+<div>
+<label class="block text-sm font-medium mb-1">Nama</label>
+<input type="text" id="nama"
+class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#157347]"
+required>
+</div>
+
+<div>
+<label class="block text-sm font-medium mb-1">Asal / Instansi</label>
+<input type="text" id="asal"
+class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#157347]">
+</div>
+
+<div>
+<label class="block text-sm font-medium mb-1">Pesan</label>
+<textarea id="pesan" rows="4"
+class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#157347]"
+required></textarea>
+</div>
+
+<button type="submit"
+class="w-full bg-[#157347] hover:bg-[#145A32] text-white py-3 rounded-lg font-semibold transition">
+Kirim via WhatsApp
+</button>
+
+</form>
+
+</div>
+
+</div>
+
 </section>
 
-<!-- ================= SCRIPT REALTIME ================= -->
+
+
+<!-- SCRIPT STATUS WHATSAPP -->
 <script>
-  const nomorWA = '6289531129765'; // GANTI NOMOR RESMI
-  const waBtn = document.getElementById('waButton');
-  const badge = document.getElementById('statusBadge');
-  const dot = document.getElementById('statusDot');
-  const text = document.getElementById('statusText');
 
-  function updateStatus() {
-    const now = new Date();
-    const day = now.getDay(); // 0=Min, 5=Jumat
-    const hour = now.getHours();
+const nomorWA = '6289531129765';
 
-    const buka = 9;
-    const tutup = 19;
+const waBtn = document.getElementById('waButton');
+const badge = document.getElementById('statusBadge');
+const dot = document.getElementById('statusDot');
+const text = document.getElementById('statusText');
 
-    const jumatMulai = 12;
-    const jumatSelesai = 14;
+function updateStatus(){
 
-    let pesanDefault = '';
+const now = new Date();
+const day = now.getDay();
+const hour = now.getHours();
 
-    // RESET CLASS
-    badge.className = 'inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full mb-6';
-    dot.className = 'w-2.5 h-2.5 rounded-full';
+let pesanDefault = '';
 
-    // LOGIKA JUMAT
-    if (day === 5 && hour >= jumatMulai && hour < jumatSelesai) {
-      badge.classList.add('bg-yellow-100', 'text-yellow-700');
-      dot.classList.add('bg-yellow-500');
-      text.textContent = 'Istirahat Jumat • 12.00 – 14.00 WIB';
+badge.className =
+'inline-flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full mb-6';
 
-      pesanDefault =
-        'Assalamu’alaikum.%0A%0ASaya menghubungi saat istirahat Jumat. ' +
-        'Mohon ditindaklanjuti setelah pukul 14.00 WIB.%0A%0ATerima kasih.';
-    }
-    // ONLINE
-    else if (hour >= buka && hour < tutup) {
-      badge.classList.add('bg-green-100', 'text-green-700');
-      dot.classList.add('bg-green-600');
-      text.textContent = 'Online • Layanan Aktif';
+dot.className =
+'w-2.5 h-2.5 rounded-full';
 
-      pesanDefault =
-        'Assalamu’alaikum.%0A%0ASaya ingin menghubungi PC IPM Medan Area.';
-    }
-    // OFFLINE
-    else {
-      badge.classList.add('bg-red-100', 'text-red-700');
-      dot.classList.add('bg-red-600');
-      text.textContent = 'Offline • Di luar jam layanan';
+if(day === 5 && hour >= 12 && hour < 14){
 
-      pesanDefault =
-        'Assalamu’alaikum.%0A%0ASaya menghubungi di luar jam layanan. ' +
-        'Mohon ditindaklanjuti pada jam kerja.%0A%0ATerima kasih.';
-    }
+badge.classList.add('bg-yellow-100','text-yellow-700');
+dot.classList.add('bg-yellow-500');
+text.textContent = 'Istirahat Jumat';
 
-    waBtn.href = `https://wa.me/${nomorWA}?text=${pesanDefault}`;
+pesanDefault =
+'Assalamu’alaikum.%0A%0ASaya menghubungi saat istirahat Jumat.';
 
-    document.getElementById('waForm').onsubmit = function(e) {
-      e.preventDefault();
+}
 
-      const nama = document.getElementById('nama').value;
-      const asal = document.getElementById('asal').value;
-      const pesan = document.getElementById('pesan').value;
+else if(hour >= 9 && hour < 19){
 
-      const fullPesan =
-        `${pesanDefault}%0A%0A` +
-        `Nama: ${nama}%0A` +
-        `Asal: ${asal}%0A%0A` +
-        `Pesan:%0A${pesan}`;
+badge.classList.add('bg-green-100','text-green-700');
+dot.classList.add('bg-green-600');
+text.textContent = 'Online • Layanan Aktif';
 
-      window.open(
-        `https://wa.me/${nomorWA}?text=${fullPesan}`,
-        '_blank'
-      );
-    };
-  }
+pesanDefault =
+'Assalamu’alaikum.%0A%0ASaya ingin menghubungi PC IPM Medan Area.';
 
-  // INIT + REALTIME UPDATE
-  updateStatus();
-  setInterval(updateStatus, 60000); // update tiap 1 menit
+}
+
+else{
+
+badge.classList.add('bg-red-100','text-red-700');
+dot.classList.add('bg-red-600');
+text.textContent = 'Offline • Di luar jam layanan';
+
+pesanDefault =
+'Assalamu’alaikum.%0A%0ASaya menghubungi di luar jam layanan.';
+
+}
+
+waBtn.href =
+`https://wa.me/${nomorWA}?text=${pesanDefault}`;
+
+document.getElementById('waForm').onsubmit = function(e){
+
+e.preventDefault();
+
+const nama = document.getElementById('nama').value;
+const asal = document.getElementById('asal').value;
+const pesan = document.getElementById('pesan').value;
+
+const fullPesan =
+`${pesanDefault}%0A%0A`+
+`Nama: ${nama}%0A`+
+`Asal: ${asal}%0A%0A`+
+`Pesan:%0A${pesan}`;
+
+window.open(
+`https://wa.me/${nomorWA}?text=${fullPesan}`,
+'_blank'
+);
+
+};
+
+}
+
+updateStatus();
+setInterval(updateStatus,60000);
+
 </script>
 
 {% endblock %}

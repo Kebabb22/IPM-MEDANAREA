@@ -66,36 +66,60 @@
   </div>
 </section>
 
+
 <!-- ================= BIDANG-BIDANG ================= -->
-<section class="py-16 bg-white">
-  <div class="max-w-6xl mx-auto px-6">
+<section class="py-20 bg-white">
 
-    <h2 class="text-3xl font-bold text-center text-[#157347] mb-12">
-      Bidang-Bidang
-    </h2>
+<div class="max-w-6xl mx-auto px-6">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<h2 class="text-3xl font-bold text-center text-[#157347] mb-14">
+Bidang-Bidang
+</h2>
 
-      {% for b in bidang_list %}
-      <a href="{% url 'detail_bidang' b.slug %}"
-         class="relative overflow-hidden rounded-xl shadow-lg group">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
 
-        <img src="{% static 'images/fotobersama.png' %}"
-             class="w-full h-72 object-cover group-hover:scale-105 transition">
+{% for b in bidang_list %}
 
-        <span class="absolute bottom-4 left-4 bg-[#157347] text-white
-                     px-4 py-2 rounded-full text-sm font-semibold">
-          {{ b.nama }}
-        </span>
-      </a>
-      {% empty %}
-      <p class="col-span-2 text-center text-gray-500">
-        Data bidang belum tersedia.
-      </p>
-      {% endfor %}
+<a href="{% url 'detail_bidang' b.slug %}"
+class="relative rounded-3xl overflow-hidden shadow-xl group">
 
-    </div>
-  </div>
+{% if b.foto %}
+<img src="{{ b.foto.url }}"
+class="w-full h-80 object-cover transition duration-500 group-hover:scale-110">
+{% else %}
+<img src="{% static 'images/fotobersama.png' %}"
+class="w-full h-80 object-cover">
+{% endif %}
+
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+
+<div class="absolute bottom-6 left-6">
+
+<h3 class="text-white text-3xl font-bold tracking-wide">
+{{ b.nama }}
+</h3>
+
+{% if b.deskripsi %}
+<p class="text-gray-200 text-sm mt-1 max-w-md">
+{{ b.deskripsi|truncatewords:12 }}
+</p>
+{% endif %}
+
+</div>
+
+</a>
+
+{% empty %}
+
+<p class="col-span-2 text-center text-gray-500">
+Data bidang belum tersedia.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+
 </section>
-
 {% endblock %}

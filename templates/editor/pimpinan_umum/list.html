@@ -1,0 +1,93 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Pimpinan Umum{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-10 animate-fadeIn">
+
+<!-- HEADER -->
+<div class="relative overflow-hidden rounded-3xl
+            bg-gradient-to-r from-[#F6C700] to-yellow-400
+            p-8 text-black shadow-2xl">
+
+  <h1 class="text-3xl font-extrabold">👑 Pimpinan Umum</h1>
+  <p class="opacity-80">Kelola data pimpinan PC IPM Medan Area</p>
+
+  <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl"></div>
+</div>
+
+<!-- BUTTON -->
+<div class="flex justify-end">
+  <a href="{% url 'editor_pimpinan_tambah' %}"
+     class="btn-primary">
+     + Tambah Pimpinan
+  </a>
+</div>
+
+<!-- GRID -->
+<div class="grid md:grid-cols-3 gap-8">
+
+{% for p in pimpinan %}
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-lg overflow-hidden">
+
+  {% if p.foto %}
+  <img src="{{ p.foto.url }}"
+       class="w-full h-56 object-cover">
+  {% else %}
+  <div class="h-56 bg-gray-200 flex items-center justify-center">
+    Tidak ada foto
+  </div>
+  {% endif %}
+
+  <div class="p-5 text-center space-y-1">
+
+    <h3 class="font-bold text-lg">{{ p.nama }}</h3>
+    <p class="text-sm text-[#157347] font-semibold">
+      {{ p.jabatan }}
+    </p>
+
+    <div class="flex justify-center gap-3 pt-3">
+
+      <a href="{% url 'editor_pimpinan_edit' p.id %}"
+         class="btn-secondary">
+         Edit
+      </a>
+
+      <a href="{% url 'editor_pimpinan_hapus' p.id %}"
+         class="btn-danger">
+         Hapus
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+{% empty %}
+<p class="text-gray-500">Belum ada data pimpinan.</p>
+{% endfor %}
+
+</div>
+</div>
+
+<style>
+.btn-primary{
+padding:.7rem 1.6rem;
+border-radius:1.2rem;
+font-weight:700;
+background:#F6C700;
+box-shadow:0 12px 25px rgba(246,199,0,.45);
+}
+.btn-secondary{
+padding:.4rem .9rem;
+border-radius:.7rem;
+border:1px solid #cbd5f5;
+}
+.btn-danger{
+padding:.4rem .9rem;
+border-radius:.7rem;
+background:#ef4444;
+color:white;
+}
+</style>
+
+{% endblock %}

@@ -22,22 +22,57 @@
   </div>
 </section>
 
+<!-- ================= SEARCH ================= -->
+<section class="bg-white">
+  <div class="max-w-6xl mx-auto px-6 pb-10">
+
+    <form method="get"
+          class="max-w-xl mx-auto flex items-center gap-3">
+
+      <input
+        type="text"
+        name="q"
+        value="{{ q|default:'' }}"
+        placeholder="Cari berita..."
+        class="flex-1 px-5 py-3 rounded-full border
+               focus:outline-none focus:ring-2
+               focus:ring-[#157347] focus:border-[#157347]"
+      >
+
+      <button
+        type="submit"
+        class="px-6 py-3 rounded-full
+               bg-[#157347] text-white font-semibold
+               hover:bg-[#145A32] transition">
+        Cari
+      </button>
+
+    </form>
+
+  </div>
+</section>
+
+<!-- ================= LIST BERITA ================= -->
 <section class="pb-24 bg-gray-50">
   <div class="max-w-6xl mx-auto px-6">
 
-    {% if posts %}
+    {% if page_obj and page_obj.object_list %}
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
 
-      {% for post in posts %}
+      {% for post in page_obj %}
       <a href="{% url 'detail_berita' post.slug %}"
-         class="group relative bg-white rounded-2xl shadow hover:shadow-2xl transition overflow-hidden">
+         class="group relative bg-white rounded-2xl shadow
+                hover:shadow-2xl transition overflow-hidden">
 
         <!-- Decorative top bar -->
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#157347] to-[#FCD34D]"></div>
+        <div class="absolute top-0 left-0 w-full h-1
+                    bg-gradient-to-r from-[#157347] to-[#FCD34D]"></div>
 
         <div class="p-6 flex flex-col h-full">
 
-          <h2 class="font-bold text-lg mb-3 text-gray-900 group-hover:text-[#157347] transition">
+          <h2
+            class="font-bold text-lg mb-3 text-gray-900
+                   group-hover:text-[#157347] transition">
             {{ post.title }}
           </h2>
 
@@ -45,9 +80,11 @@
             {{ post.content|truncatewords:24 }}
           </p>
 
-          <div class="mt-6 flex items-center justify-between text-xs text-gray-400">
+          <div class="mt-6 flex items-center justify-between
+                      text-xs text-gray-400">
             <span>{{ post.created_at|date:"d M Y" }}</span>
-            <span class="text-[#157347] font-medium group-hover:underline">
+            <span class="text-[#157347] font-medium
+                         group-hover:underline">
               Baca →
             </span>
           </div>
@@ -58,9 +95,18 @@
       {% endfor %}
 
     </div>
+
+    <!-- ================= PAGINATION ================= -->
+    {% include "components/pagination.html" %}
+
     {% else %}
       <p class="text-center text-gray-500 py-20">
-        Belum ada berita yang dipublikasikan.
+        {% if q %}
+          Tidak ada berita untuk pencarian
+          "<strong>{{ q }}</strong>".
+        {% else %}
+          Belum ada berita yang dipublikasikan.
+        {% endif %}
       </p>
     {% endif %}
 

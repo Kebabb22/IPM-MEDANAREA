@@ -1,0 +1,92 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Form Personil{% endblock %}
+
+{% block content %}
+
+<div class="max-w-xl mx-auto space-y-6">
+
+<h1 class="text-2xl font-bold">
+Form Personil Bidang
+</h1>
+
+
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow">
+
+<form method="POST" enctype="multipart/form-data"
+class="space-y-4">
+
+{% csrf_token %}
+
+<label class="block text-sm font-semibold">
+Bidang
+</label>
+
+<select name="bidang"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+{% for b in bidang_list %}
+<option value="{{ b.id }}">
+{{ b.nama }}
+</option>
+{% endfor %}
+
+</select>
+
+
+<label class="block text-sm font-semibold">
+Nama
+</label>
+
+<input type="text"
+name="nama"
+value="{{ obj.nama|default:'' }}"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+
+<label class="block text-sm font-semibold">
+Jabatan
+</label>
+
+<select name="jabatan"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+<option value="ketua">Ketua Bidang</option>
+<option value="sekretaris">Sekretaris Bidang</option>
+<option value="anggota">Anggota</option>
+
+</select>
+
+
+<label class="block text-sm font-semibold">
+Urutan
+</label>
+
+<input type="number"
+name="urutan"
+value="{{ obj.urutan|default:0 }}"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+
+<label class="block text-sm font-semibold">
+Foto
+</label>
+
+<input type="file" name="foto">
+
+
+<button
+class="mt-4 px-5 py-2 rounded-xl
+bg-yellow-400 hover:bg-yellow-500
+text-black font-semibold shadow">
+
+Simpan
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

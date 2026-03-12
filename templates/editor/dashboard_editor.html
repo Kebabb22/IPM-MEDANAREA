@@ -2,224 +2,229 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl">
+<div class="max-w-7xl mx-auto space-y-16 animate-fadeIn">
 
-  <!-- ================= HEADER ================= -->
-  <div class="mb-8">
-    <h1 class="text-2xl font-bold">Dashboard</h1>
-    <p class="text-gray-500 mt-1">
-      Ringkasan aktivitas editor
-    </p>
+  <!-- ================= HERO HEADER ================= -->
+  <section class="relative overflow-hidden rounded-[2.5rem]
+                   bg-gradient-to-br from-[#F6C700] via-yellow-400 to-amber-500
+                   p-10 text-black shadow-2xl">
+
+    <div class="relative z-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
+        Dashboard Editor
+      </h1>
+      <p class="mt-2 text-black/70 max-w-xl">
+        Kendali penuh aktivitas editorial PC IPM Medan Area secara real-time
+      </p>
+    </div>
+
+    <!-- floating glow -->
+    <div class="absolute -top-16 -right-16 w-64 h-64 bg-white/30 rounded-full blur-3xl animate-pulseSlow"></div>
+    <div class="absolute bottom-0 left-0 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div>
+  </section>
+
+  <!-- ================= QUICK ACTION ================= -->
+  <div class="flex flex-wrap gap-4">
+    <a href="{% url 'tambah_berita' %}"
+       class="quick-btn bg-[#F6C700] text-black">
+       ➕ Tambah Berita
+    </a>
+    <a href="{% url 'editor_galeri' %}"
+       class="quick-btn bg-slate-800 text-white dark:bg-slate-700">
+       🖼️ Galeri
+    </a>
   </div>
 
-  <!-- ================= STATISTIC CARDS ================= -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+  <!-- ================= STAT CARDS ================= -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
 
-    <!-- TOTAL BERITA -->
-    <div class="bg-white rounded-xl shadow p-6">
-      <div class="flex items-center justify-between">
-        <p class="text-gray-500 text-sm">Total Berita</p>
-        <span class="text-gray-400">📰</span>
+    <div class="stat-card from-[#F6C700] to-yellow-400 text-black">
+      <span>📰</span>
+      <p>Total Berita</p>
+      <h2>{{ total|default:0 }}</h2>
+      <div class="progress bg-black/20">
+        <div style="width:100%"></div>
       </div>
-      <p class="text-3xl font-bold mt-3">
-        {{ total|default:0 }}
+    </div>
+
+    <div class="stat-card from-amber-400 to-orange-500">
+      <span>📝</span>
+      <p>Draft</p>
+      <h2>{{ draft|default:0 }}</h2>
+      <div class="progress">
+        <div style="width:65%"></div>
+      </div>
+    </div>
+
+    <div class="stat-card from-emerald-400 to-green-500">
+      <span>🚀</span>
+      <p>Publish</p>
+      <h2>{{ publish|default:0 }}</h2>
+      <div class="progress">
+        <div style="width:80%"></div>
+      </div>
+    </div>
+
+    <div class="stat-card from-fuchsia-400 to-pink-500">
+      <span>🖼️</span>
+      <p>Galeri</p>
+      <h2>{{ galeri_total|default:0 }}</h2>
+      <div class="progress">
+        <div style="width:50%"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= INSIGHT + ACTIVITY ================= -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+    <div class="glass-card hover:scale-[1.02] transition">
+      <h3 class="title">✨ Insight Editorial</h3>
+      <p class="desc">
+        {% if draft > publish %}
+          Fokuskan tim pada publikasi. Draft menumpuk menandakan bottleneck editorial.
+        {% else %}
+          Performa publikasi sangat stabil. Ritme kerja tim sudah optimal.
+        {% endif %}
       </p>
     </div>
 
-    <!-- DRAFT -->
-    <div class="bg-white rounded-xl shadow p-6">
-      <div class="flex items-center justify-between">
-        <p class="text-gray-500 text-sm">Menunggu Moderasi</p>
-        <span class="text-yellow-500">⏳</span>
-      </div>
-      <p class="text-3xl font-bold text-yellow-500 mt-3">
-        {{ draft|default:0 }}
-      </p>
-    </div>
-
-    <!-- PUBLISH -->
-    <div class="bg-white rounded-xl shadow p-6">
-      <div class="flex items-center justify-between">
-        <p class="text-gray-500 text-sm">Berita Publish</p>
-        <span class="text-green-600">✅</span>
-      </div>
-      <p class="text-3xl font-bold text-green-600 mt-3">
-        {{ publish|default:0 }}
-      </p>
+    <div class="glass-card hover:scale-[1.02] transition">
+      <h3 class="title">🕒 Aktivitas Editor</h3>
+      <ul class="space-y-4 text-gray-600 dark:text-gray-300">
+        <li class="activity">Login ke dashboard</li>
+        <li class="activity">Menulis & mengedit berita</li>
+        <li class="activity">Moderasi & publikasi</li>
+      </ul>
     </div>
 
   </div>
 
   <!-- ================= CHART ================= -->
-  <div class="bg-white rounded-xl shadow p-6 mb-10">
-    <h2 class="text-lg font-semibold mb-4">
-      Statistik Berita
-    </h2>
-
-    <!-- DATA UNTUK JS -->
-    <canvas
-      id="beritaChart"
+  <div class="glass-card">
+    <h3 class="title">📈 Statistik Berita</h3>
+    <canvas id="chart"
       height="120"
       data-draft="{{ draft|default:0 }}"
-      data-publish="{{ publish|default:0 }}">
-    </canvas>
+      data-publish="{{ publish|default:0 }}"></canvas>
   </div>
 
-  <!-- ================= DRAFT TERBARU ================= -->
-  {% if perms.blog.change_post %}
-  <div class="bg-white rounded-xl shadow p-6 mb-10">
-
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-semibold">Draft Terbaru</h2>
-      <a
-        href="{% url 'moderasi_berita' %}"
-        class="text-sm text-yellow-600 hover:underline">
-        Lihat semua
-      </a>
-    </div>
-
-    {% if draft_terbaru %}
-      <ul class="divide-y">
-        {% for post in draft_terbaru %}
-        <li class="py-4 flex items-center justify-between">
-
-          <div>
-            <p class="font-medium">{{ post.title }}</p>
-            <p class="text-xs text-gray-500">
-              {{ post.created_at|date:"d M Y, H:i" }}
-            </p>
-          </div>
-
-          <div class="flex gap-2">
-            <a
-              href="{% url 'edit_berita' post.id %}"
-              class="px-3 py-1 text-sm rounded-lg border border-gray-300 hover:bg-gray-100">
-              Edit
-            </a>
-
-            <a
-              href="{% url 'moderasi_berita' %}"
-              class="px-3 py-1 text-sm rounded-lg bg-[#FFC107] hover:bg-yellow-500 text-black">
-              Moderasi
-            </a>
-          </div>
-
-        </li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p class="text-gray-500 text-sm">
-        Tidak ada draft berita saat ini.
-      </p>
-    {% endif %}
-
-  </div>
-  {% endif %}
-
-  <!-- ================= QUICK ACTION ================= -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-    {% if perms.blog.change_post %}
-    <div class="bg-white rounded-xl shadow p-6">
-      <h2 class="font-semibold text-lg mb-2">
-        Moderasi Berita
-      </h2>
-      <p class="text-gray-500 text-sm mb-4">
-        Periksa dan setujui berita yang masuk
-      </p>
-
-      <a
-        href="{% url 'moderasi_berita' %}"
-        class="inline-block bg-[#FFC107] hover:bg-yellow-500 text-black font-medium px-5 py-2 rounded-lg">
-        Buka Moderasi
-      </a>
-    </div>
-    {% endif %}
-
-    {% if perms.blog.add_post %}
-    <div class="bg-white rounded-xl shadow p-6">
-      <h2 class="font-semibold text-lg mb-2">
-        Tambah Berita
-      </h2>
-      <p class="text-gray-500 text-sm mb-4">
-        Buat dan kirim berita baru
-      </p>
-
-      <a
-        href="{% url 'tambah_berita' %}"
-        class="inline-block border border-gray-300 hover:bg-gray-100 text-gray-800 font-medium px-5 py-2 rounded-lg">
-        Tambah Berita
-      </a>
-    </div>
-    {% endif %}
-
-        {% if perms.blog.add_galeri %}
-          <div class="bg-white rounded-xl shadow p-6">
-            <h2 class="font-semibold text-lg mb-2">
-              Galeri Kegiatan
-            </h2>
-          <p class="text-gray-500 text-sm mb-4">
-            Upload & kelola foto kegiatan
-          </p>
-
-        <a
-           href="{% url 'editor_galeri' %}"
-           class="inline-block bg-[#157347] hover:bg-[#145A32]
-           text-white font-medium px-5 py-2 rounded-lg">
-           Kelola Galeri
-        </a>
-        </div>
-        {% endif %}
-      
-      <div class="bg-white rounded-xl shadow p-6">
-        <div class="flex items-center justify-between">
-        <p class="text-gray-500 text-sm">Total Foto Galeri</p>
-        <span class="text-purple-600">📸</span>
-      </div>
-    <p class="text-3xl font-bold mt-3">
-       {{ galeri_total|default:0 }}
-      </p>
-    </div>
-  </div>
 </div>
 
-<!-- ================= CHART JS ================= -->
+<!-- ================= STYLE ================= -->
+<style>
+@keyframes fadeIn {
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.animate-fadeIn{animation:fadeIn .8s ease-out both}
+
+@keyframes pulseSlow {
+  0%,100%{opacity:.6}
+  50%{opacity:.9}
+}
+.animate-pulseSlow{animation:pulseSlow 4s ease-in-out infinite}
+
+.quick-btn{
+  padding:.9rem 1.4rem;
+  border-radius:1.4rem;
+  font-weight:700;
+  box-shadow:0 12px 25px rgba(0,0,0,.18);
+  transition:.35s;
+}
+.quick-btn:hover{
+  transform:translateY(-4px) scale(1.04);
+}
+
+.stat-card{
+  padding:2rem;
+  border-radius:2rem;
+  color:white;
+  background:linear-gradient(135deg,var(--tw-gradient-from),var(--tw-gradient-to));
+  box-shadow:0 25px 55px rgba(0,0,0,.3);
+  transition:.5s cubic-bezier(.22,1,.36,1);
+}
+.stat-card:hover{
+  transform:translateY(-14px) scale(1.05);
+}
+.stat-card span{font-size:2rem}
+.stat-card h2{font-size:2.8rem;font-weight:900}
+
+.progress{
+  margin-top:1rem;
+  height:6px;
+  background:rgba(255,255,255,.3);
+  border-radius:99px;
+  overflow:hidden;
+}
+.progress div{
+  height:100%;
+  background:white;
+  border-radius:99px;
+  animation:grow 1.2s ease-out;
+}
+@keyframes grow{
+  from{width:0}
+}
+
+.glass-card{
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(14px);
+  border-radius:2rem;
+  padding:2rem;
+  box-shadow:0 30px 70px rgba(0,0,0,.14);
+}
+.dark .glass-card{
+  background:rgba(30,41,59,.85);
+}
+.title{
+  font-weight:700;
+  margin-bottom:.75rem;
+}
+.desc{
+  color:#4b5563;
+}
+.dark .desc{color:#cbd5e1}
+
+.activity{
+  padding-left:1.2rem;
+  position:relative;
+}
+.activity::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:.6rem;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#F6C700;
+}
+</style>
+
+<!-- ================= CHART ================= -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const canvas = document.getElementById('beritaChart');
-  if (!canvas || typeof Chart === 'undefined') return;
-
-  const draft = Number(canvas.dataset.draft || 0);
-  const publish = Number(canvas.dataset.publish || 0);
-
-  const ctx = canvas.getContext('2d');
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Draft', 'Publish'],
-      datasets: [{
-        label: 'Jumlah Berita',
-        data: [draft, publish],
-        backgroundColor: ['#FACC15', '#22C55E'],
-        borderRadius: 10
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { precision: 0 }
-        }
-      }
-    }
-  });
-});
+const c = document.getElementById('chart');
+if(c){
+ new Chart(c,{
+  type:'bar',
+  data:{
+    labels:['Draft','Publish'],
+    datasets:[{
+      data:[c.dataset.draft,c.dataset.publish],
+      backgroundColor:['#facc15','#22c55e'],
+      borderRadius:18
+    }]
+  },
+  options:{
+    animation:{duration:1400,easing:'easeOutQuart'},
+    plugins:{legend:{display:false}},
+    scales:{y:{beginAtZero:true}}
+  }
+ });
+}
 </script>
+
 {% endblock %}

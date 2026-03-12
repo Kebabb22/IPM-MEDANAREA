@@ -1,0 +1,64 @@
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+{% with request.GET.urlencode as query_string %}
+
+<nav
+  class="flex justify-center items-center gap-2 mt-16 text-sm"
+  data-pagination
+  data-ajax-container="#ajax-container"
+>
+
+  {# ================= PREVIOUS ================= #}
+  {% if page_obj.has_previous %}
+    <a
+      href="?{{ query_string|cut:'page='|cut:'&page=' }}&page={{ page_obj.previous_page_number }}"
+      data-ajax
+      data-page="{{ page_obj.previous_page_number }}"
+      class="px-4 py-2 rounded-full border
+             hover:bg-gray-100 transition"
+      aria-label="Halaman sebelumnya"
+    >
+      ←
+    </a>
+  {% endif %}
+
+  {# ================= PAGE NUMBERS ================= #}
+  {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+      <span
+        class="px-4 py-2 rounded-full
+               bg-[#157347] text-white font-semibold"
+        aria-current="page"
+      >
+        {{ num }}
+      </span>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+      <a
+        href="?{{ query_string|cut:'page='|cut:'&page=' }}&page={{ num }}"
+        data-ajax
+        data-page="{{ num }}"
+        class="px-4 py-2 rounded-full border
+               hover:bg-gray-100 transition"
+      >
+        {{ num }}
+      </a>
+    {% endif %}
+  {% endfor %}
+
+  {# ================= NEXT ================= #}
+  {% if page_obj.has_next %}
+    <a
+      href="?{{ query_string|cut:'page='|cut:'&page=' }}&page={{ page_obj.next_page_number }}"
+      data-ajax
+      data-page="{{ page_obj.next_page_number }}"
+      class="px-4 py-2 rounded-full border
+             hover:bg-gray-100 transition"
+      aria-label="Halaman berikutnya"
+    >
+      →
+    </a>
+  {% endif %}
+
+</nav>
+
+{% endwith %}
+{% endif %}

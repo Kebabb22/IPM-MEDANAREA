@@ -1,0 +1,110 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Program Kerja{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto space-y-10">
+
+<!-- HEADER -->
+<div class="flex justify-between items-center">
+
+<h1 class="text-2xl font-bold">
+Program Kerja
+</h1>
+
+<a href="{% url 'tambah_program_kerja' %}"
+class="px-4 py-2 rounded-xl
+bg-yellow-400 hover:bg-yellow-500
+text-black font-semibold shadow">
+
++ Tambah Program
+
+</a>
+
+</div>
+
+
+<!-- TABLE -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow overflow-hidden">
+
+<table class="w-full text-sm">
+
+<thead class="bg-yellow-400 text-black">
+<tr>
+
+<th class="p-3 text-left">Foto</th>
+<th class="p-3 text-left">Judul</th>
+<th class="p-3 text-left">Bidang</th>
+<th class="p-3 text-left">Tanggal</th>
+<th class="p-3 text-left">Aksi</th>
+
+</tr>
+</thead>
+
+
+<tbody>
+
+{% for p in data %}
+
+<tr class="border-b dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700">
+
+<td class="p-3">
+
+{% if p.foto %}
+<img src="{{ p.foto.url }}"
+class="w-14 h-14 rounded object-cover">
+{% endif %}
+
+</td>
+
+<td class="p-3 font-medium">
+{{ p.judul }}
+</td>
+
+<td class="p-3">
+{{ p.bidang.nama }}
+</td>
+
+<td class="p-3">
+{{ p.tanggal }}
+</td>
+
+<td class="p-3 flex gap-3">
+
+<a href="{% url 'edit_program_kerja' p.id %}"
+class="text-blue-500 hover:underline">
+Edit
+</a>
+
+<form method="POST"
+action="{% url 'hapus_program_kerja' p.id %}">
+{% csrf_token %}
+
+<button class="text-red-500 hover:underline">
+Hapus
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="5" class="p-6 text-center text-gray-500">
+Belum ada program kerja
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Form Program Kerja{% endblock %}
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto space-y-8">
+
+<h1 class="text-2xl font-bold">
+Form Program Kerja
+</h1>
+
+
+<div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow">
+
+<form method="POST" enctype="multipart/form-data"
+class="space-y-5">
+
+{% csrf_token %}
+
+
+<!-- BIDANG -->
+<label class="block text-sm font-semibold">
+Bidang
+</label>
+
+<select name="bidang"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+{% for b in bidang_list %}
+<option value="{{ b.id }}">
+{{ b.nama }}
+</option>
+{% endfor %}
+
+</select>
+
+
+<!-- JUDUL -->
+<label class="block text-sm font-semibold">
+Judul Program
+</label>
+
+<input type="text"
+name="judul"
+value="{{ obj.judul|default:'' }}"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+
+<!-- DESKRIPSI -->
+<label class="block text-sm font-semibold">
+Deskripsi
+</label>
+
+<textarea
+name="deskripsi"
+rows="5"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+{{ obj.deskripsi|default:'' }}
+
+</textarea>
+
+
+<!-- TANGGAL -->
+<label class="block text-sm font-semibold">
+Tanggal Kegiatan
+</label>
+
+<input type="date"
+name="tanggal"
+value="{{ obj.tanggal|default:'' }}"
+class="w-full p-2 rounded border dark:bg-slate-700">
+
+
+<!-- FOTO -->
+<label class="block text-sm font-semibold">
+Foto Program
+</label>
+
+<input type="file" name="foto">
+
+
+<button
+class="mt-4 px-5 py-2 rounded-xl
+bg-yellow-400 hover:bg-yellow-500
+text-black font-semibold shadow">
+
+Simpan
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}

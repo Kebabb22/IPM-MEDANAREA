@@ -7,7 +7,8 @@ from .models import (
     Pengurus,
     Prestasi,
     Galeri,
-    GaleriKategori
+    GaleriKategori,
+    PengelolaWebsite,
 )
 
 # =====================================================
@@ -87,3 +88,24 @@ class GaleriAdmin(admin.ModelAdmin):
     list_display = ("judul", "kategori", "created_at")
     list_filter = ("kategori",)
     search_fields = ("judul",)
+
+@admin.register(PengelolaWebsite)
+class PengelolaWebsiteAdmin(admin.ModelAdmin):
+    list_display = ('nama', 'organisasi', 'role', 'aktif')
+    list_filter = ('role', 'aktif')
+    search_fields = ('nama', 'organisasi')
+    ordering = ('role', 'nama')
+
+    def save_model(self, request, obj, form, change):
+        """
+        Pastikan hanya 1 Ketua yang aktif.
+        Jika ada Ketua baru diaktifkan,
+        Ketua lama otomatis dinonaktifkan.
+        """
+        if obj.role == 'ketua' and obj.aktif:
+            PengelolaWebsite.objects.filter(
+                role='ketua',
+                aktif=True
+            ).exclude(pk=obj.pk).update(aktif=False)
+
+        super().save_model(request, obj, form, change)

@@ -1,11 +1,12 @@
 def global_user_role(request):
-    is_editor = False
-
-    if request.user.is_authenticated:
-        is_editor = request.user.groups.filter(
-            name__in=['Admin', 'Editor']
-        ).exists()
-
+    user = request.user
     return {
-        'is_editor': is_editor
+        'is_editor': (
+            user.is_authenticated and
+            user.groups.filter(name__in=['Dewa', 'admin']).exists()
+        ),
+        'is_dewa': (
+            user.is_authenticated and
+            user.groups.filter(name='Dewa').exists()
+        ),
     }

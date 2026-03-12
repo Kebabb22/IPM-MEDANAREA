@@ -1,0 +1,104 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Personil Bidang{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto space-y-8">
+
+<!-- HEADER -->
+<div class="flex justify-between items-center">
+
+<h1 class="text-2xl font-bold">
+Personil Bidang
+</h1>
+
+<a href="{% url 'tambah_personil_bidang' %}"
+class="px-4 py-2 rounded-xl
+bg-yellow-400 hover:bg-yellow-500
+text-black font-semibold shadow">
++ Tambah Personil
+</a>
+
+</div>
+
+
+<!-- TABLE -->
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow overflow-hidden">
+
+<table class="w-full text-sm">
+
+<thead class="bg-yellow-400 text-black">
+<tr>
+<th class="p-3 text-left">Foto</th>
+<th class="p-3 text-left">Nama</th>
+<th class="p-3 text-left">Bidang</th>
+<th class="p-3 text-left">Jabatan</th>
+<th class="p-3 text-left">Urutan</th>
+<th class="p-3 text-left">Aksi</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in data %}
+<tr class="border-b dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700">
+
+<td class="p-3">
+{% if p.foto %}
+<img src="{{ p.foto.url }}"
+class="w-10 h-10 rounded-full object-cover">
+{% endif %}
+</td>
+
+<td class="p-3 font-medium">
+{{ p.nama }}
+</td>
+
+<td class="p-3">
+{{ p.bidang.nama }}
+</td>
+
+<td class="p-3">
+{{ p.get_jabatan_display }}
+</td>
+
+<td class="p-3">
+{{ p.urutan }}
+</td>
+
+<td class="p-3 flex gap-3">
+
+<a href="{% url 'edit_personil_bidang' p.id %}"
+class="text-blue-500 hover:underline">
+Edit
+</a>
+
+<form method="POST"
+action="{% url 'hapus_personil_bidang' p.id %}">
+{% csrf_token %}
+<button class="text-red-500 hover:underline">
+Hapus
+</button>
+</form>
+
+</td>
+
+</tr>
+{% empty %}
+
+<tr>
+<td colspan="6" class="p-6 text-center text-gray-400">
+Belum ada data personil
+</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+{% endblock %}

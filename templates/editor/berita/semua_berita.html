@@ -1,0 +1,167 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Semua Berita{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-10 animate-fadeIn">
+
+  <!-- ================= HERO HEADER ================= -->
+  <div class="relative overflow-hidden rounded-3xl
+              bg-gradient-to-r from-[#F6C700] to-yellow-400
+              p-8 text-black shadow-2xl">
+
+    <h1 class="text-3xl font-extrabold">
+      🗂️ Semua Berita
+    </h1>
+    <p class="mt-1 opacity-80 max-w-xl">
+      Kelola seluruh berita, baik draft maupun yang sudah dipublikasikan
+    </p>
+
+    <!-- glow -->
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ================= TABLE CARD ================= -->
+  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-x-auto">
+
+    <table class="w-full text-sm">
+      <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200">
+        <tr>
+          <th class="p-5 text-left font-semibold">Judul</th>
+          <th class="p-5 text-left font-semibold">Status</th>
+          <th class="p-5 text-left font-semibold">Tanggal</th>
+          <th class="p-5 text-center font-semibold">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for post in posts %}
+        <tr class="group border-t dark:border-slate-700
+                   hover:bg-yellow-50/50 dark:hover:bg-slate-700/50
+                   transition">
+
+          <!-- JUDUL -->
+          <td class="p-5 font-medium">
+            <div class="flex flex-col">
+              <span class="font-semibold">
+                {{ post.title }}
+              </span>
+              <span class="text-xs text-gray-500 mt-1">
+                ID: {{ post.id }}
+              </span>
+            </div>
+          </td>
+
+          <!-- STATUS -->
+          <td class="p-5">
+            {% if post.is_published %}
+              <span class="status published">
+                ● Publish
+              </span>
+            {% else %}
+              <span class="status draft">
+                ● Draft
+              </span>
+            {% endif %}
+          </td>
+
+          <!-- TANGGAL -->
+          <td class="p-5 text-gray-500 dark:text-gray-400">
+            {{ post.created_at|date:"d M Y" }}
+          </td>
+
+          <!-- AKSI -->
+          <td class="p-5">
+            <div class="flex flex-wrap justify-center gap-2">
+
+              <!-- EDIT -->
+              <a href="{% url 'edit_berita' post.id %}"
+                 class="action-btn bg-blue-500 hover:bg-blue-600 text-white">
+                ✏️ Edit
+              </a>
+
+              <!-- PUBLISH -->
+              {% if not post.is_published %}
+              <a href="{% url 'publish_berita' post.id %}"
+                 class="action-btn bg-[#F6C700] hover:bg-yellow-400 text-black">
+                🚀 Publish
+              </a>
+              {% endif %}
+
+              <!-- DELETE -->
+              <form method="post"
+                    action="{% url 'hapus_berita' post.id %}"
+                    onsubmit="return confirm('Yakin hapus berita ini?')">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="action-btn bg-red-600 hover:bg-red-700 text-white">
+                  🗑️ Hapus
+                </button>
+              </form>
+
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<!-- ================= STYLE ================= -->
+<style>
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.animate-fadeIn{
+  animation:fadeIn .7s ease-out both
+}
+
+/* STATUS BADGE */
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  font-size:.7rem;
+  font-weight:700;
+  padding:.35rem .7rem;
+  border-radius:999px;
+}
+.status.published{
+  background:#dcfce7;
+  color:#166534;
+}
+.status.draft{
+  background:#fef3c7;
+  color:#92400e;
+}
+.dark .status.published{
+  background:rgba(34,197,94,.15);
+  color:#4ade80;
+}
+.dark .status.draft{
+  background:rgba(246,199,0,.15);
+  color:#F6C700;
+}
+
+/* ACTION BUTTON */
+.action-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.45rem .8rem;
+  border-radius:.75rem;
+  font-size:.75rem;
+  font-weight:600;
+  transition:.25s;
+  box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+.action-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+}
+</style>
+
+{% endblock %}

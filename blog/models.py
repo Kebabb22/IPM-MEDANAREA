@@ -37,6 +37,12 @@ class Bidang(models.Model):
     slug = models.SlugField(unique=True)
     deskripsi = models.TextField(blank=True)
 
+    foto = models.ImageField(
+        upload_to='bidang/',
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.nama
 
@@ -45,38 +51,63 @@ class Bidang(models.Model):
 # PERSONIL BIDANG
 # =====================================================
 class PersonilBidang(models.Model):
+
     JABATAN_CHOICES = [
         ('ketua', 'Ketua Bidang'),
         ('sekretaris', 'Sekretaris Bidang'),
         ('anggota', 'Anggota'),
     ]
 
-    bidang = models.ForeignKey(Bidang, on_delete=models.CASCADE)
+    bidang = models.ForeignKey(
+        Bidang,
+        on_delete=models.CASCADE,
+        related_name='personil'
+    )
+
     nama = models.CharField(max_length=100)
-    jabatan = models.CharField(max_length=20, choices=JABATAN_CHOICES)
-    foto = models.ImageField(upload_to='personil/', blank=True, null=True)
+
+    jabatan = models.CharField(
+        max_length=20,
+        choices=JABATAN_CHOICES
+    )
+
+    foto = models.ImageField(
+        upload_to='personil_bidang/',
+        blank=True,
+        null=True
+    )
+
     urutan = models.PositiveIntegerField(default=0)
 
-    class Meta:
-        ordering = ['urutan']
-
     def __str__(self):
-        return f"{self.nama} - {self.get_jabatan_display()}"
+        return f"{self.nama} - {self.bidang.nama}"
 
 
 # =====================================================
 # PROGRAM KERJA
 # =====================================================
 class ProgramKerja(models.Model):
-    bidang = models.ForeignKey(Bidang, on_delete=models.CASCADE)
-    judul = models.CharField(max_length=150)
+
+    bidang = models.ForeignKey(
+        Bidang,
+        on_delete=models.CASCADE,
+        related_name='program'
+    )
+
+    judul = models.CharField(max_length=200)
+
     deskripsi = models.TextField()
-    foto = models.ImageField(upload_to='program/')
-    tanggal = models.DateField(null=True, blank=True)
+
+    foto = models.ImageField(
+        upload_to='program_kerja/',
+        blank=True,
+        null=True
+    )
+
+    tanggal = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.judul
-
 
 # =====================================================
 # PENGURUS
@@ -141,12 +172,68 @@ class Galeri(models.Model):
         GaleriKategori,
         on_delete=models.CASCADE,
         related_name='galeri',
-        null=True,        # ✅ PENTING (biar data lama aman)
-        blank=True        # ✅ biar form admin/editor fleksibel
+        null=True,
+        blank=True
     )
+
     judul = models.CharField(max_length=150)
     foto = models.ImageField(upload_to='galeri/')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.judul
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        try:
+            img = Image.open(self.foto.path)
+
+            max_size = (1600, 1600)
+            if img.height > 1600 or img.width > 1600:
+                img.thumbnail(max_size)
+
+            img.save(self.foto.path, optimize=True, quality=75)
+        except Exception:
+            pass
+
+#data pimpinan umum #
+class PimpinanUmum(models.Model):
+    nama = models.CharField(max_length=150)
+    jabatan = models.CharField(max_length=150)
+    foto = models.ImageField(upload_to='pimpinan/', blank=True, null=True)
+
+    aktif = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nama} - {self.jabatan}"
+    
+# pengelolas website #
+
+class PengelolaWebsite(models.Model):
+    ROLE_CHOICES = [
+        ('ketua', 'Ketua'),
+        ('editor', 'Editor'),
+    ]
+
+    nama = models.CharField(max_length=150)
+    organisasi = models.CharField(max_length=150)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+
+    foto = models.ImageField(
+        upload_to='pengelola/',
+        blank=True,
+        null=True
+    )
+
+    aktif = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nama
+
+    @property
+    def avatar(self):
+        """Avatar default jika belum ada foto"""
+        if self.foto:
+            return self.foto.url
+        return None

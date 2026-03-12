@@ -22,108 +22,189 @@
 </section>
 
 <!-- ================= PIMPINAN HARIAN ================= -->
-<section class="py-12 bg-gray-50">
-  <div class="max-w-6xl mx-auto px-6">
+<section class="py-16 bg-gray-50">
+<div class="max-w-6xl mx-auto px-6">
 
-    <h2 class="text-2xl font-bold text-center mb-10">
-      Pimpinan Harian
-    </h2>
+<h2 class="text-2xl font-bold text-center mb-12">
+Pimpinan Harian
+</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-      {% for p in pimpinan_harian %}
-      <div class="bg-white rounded-xl shadow text-center p-6">
+{% for p in pimpinan_harian %}
 
-        {% if p.foto %}
-        <img src="{{ p.foto.url }}"
-             alt="{{ p.nama }}"
-             class="w-32 h-32 mx-auto rounded-full object-cover mb-4">
-        {% else %}
-        <div class="w-32 h-32 mx-auto rounded-full bg-gray-200 mb-4 flex items-center justify-center">
-          <span class="text-gray-500 text-sm">No Photo</span>
-        </div>
-        {% endif %}
+<div class="bg-white rounded-2xl shadow-md overflow-hidden
+            transition hover:shadow-xl hover:-translate-y-1">
 
-        <h3 class="font-semibold text-lg">{{ p.nama }}</h3>
-        <p class="text-sm text-gray-600">{{ p.jabatan }}</p>
+<!-- FOTO -->
+<div class="relative h-64 overflow-hidden">
 
-      </div>
-      {% empty %}
-      <p class="col-span-2 text-center text-gray-500">
-        Data pimpinan harian belum tersedia.
-      </p>
-      {% endfor %}
+{% if p.foto %}
+<img src="{{ p.foto.url }}"
+class="w-full h-full object-cover
+       transition duration-500 group-hover:scale-105">
+{% else %}
+<div class="w-full h-full bg-gray-200 flex items-center justify-center">
+<span class="text-gray-500">No Photo</span>
+</div>
+{% endif %}
 
-    </div>
-  </div>
+<!-- overlay gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+</div>
+
+<!-- INFO -->
+<div class="p-6 text-center">
+
+<h3 class="text-lg font-semibold text-gray-800">
+{{ p.nama }}
+</h3>
+
+<p class="text-sm text-gray-600 mt-1">
+{% if p.jabatan == "ketua" %}
+Ketua Bidang
+{% elif p.jabatan == "sekretaris" %}
+Sekretaris Bidang
+{% endif %}
+</p>  
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p class="col-span-2 text-center text-gray-500">
+Data pimpinan harian belum tersedia.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
 </section>
 
 <!-- ================= ANGGOTA BIDANG ================= -->
-<section class="py-12 bg-white">
-  <div class="max-w-6xl mx-auto px-6">
+<section class="py-16 bg-white">
+<div class="max-w-6xl mx-auto px-6">
 
-    <h2 class="text-2xl font-bold text-center mb-10">
-      Anggota Bidang
-    </h2>
+<h2 class="text-2xl font-bold text-center mb-12">
+Anggota Bidang
+</h2>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
 
-      {% for a in anggota %}
-      <div class="text-center">
+{% for a in anggota %}
+<div class="bg-white rounded-xl shadow overflow-hidden
+            transition hover:-translate-y-1 hover:shadow-lg">
 
-        {% if a.foto %}
-        <img src="{{ a.foto.url }}"
-             alt="{{ a.nama }}"
-             class="w-24 h-24 mx-auto rounded-full object-cover mb-3">
-        {% else %}
-        <div class="w-24 h-24 mx-auto rounded-full bg-gray-200 mb-3"></div>
-        {% endif %}
+<!-- FOTO -->
+<div class="h-40 overflow-hidden">
 
-        <p class="font-medium text-sm">{{ a.nama }}</p>
+{% if a.foto %}
+<img src="{{ a.foto.url }}"
+class="w-full h-full object-cover transition duration-500 hover:scale-105">
+{% else %}
+<div class="w-full h-full bg-gray-200 flex items-center justify-center">
+<span class="text-gray-400 text-xs">No Photo</span>
+</div>
+{% endif %}
 
-      </div>
-      {% empty %}
-      <p class="col-span-full text-center text-gray-500">
-        Belum ada anggota bidang.
-      </p>
-      {% endfor %}
+</div>
 
-    </div>
-  </div>
-</section>
+<!-- INFO -->
+<div class="p-3 text-center">
+
+<p class="font-medium text-sm text-gray-800">
+{{ a.nama }}
+</p>
+
+<p class="text-xs text-gray-500 mt-1">
+Anggota Bidang
+</p>
+</div>
+
+</div>
+
+{% empty %}
+<p class="col-span-full text-center text-gray-500">
+Belum ada anggota bidang.
+</p>
+{% endfor %}
+
+</div>
+
+</div>
+</section>  
 
 <!-- ================= PROGRAM KERJA ================= -->
-<section class="py-12 bg-gray-50">
-  <div class="max-w-6xl mx-auto px-6">
+<section class="py-16 bg-gray-50">
+<div class="max-w-6xl mx-auto px-6">
 
-    <h2 class="text-2xl font-bold text-center mb-10">
-      Program Kerja
-    </h2>
+<h2 class="text-2xl font-bold text-center mb-12">
+Program Kerja
+</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-      {% for p in program_kerja %}
-      <div class="bg-white rounded-xl shadow overflow-hidden">
+{% for p in program_kerja %}
 
-        {% if p.foto %}
-        <img src="{{ p.foto.url }}" class="w-full h-40 object-cover">
-        {% endif %}
+<div class="group bg-white rounded-2xl shadow-md overflow-hidden
+            transition hover:shadow-xl hover:-translate-y-1">
 
-        <div class="p-4">
-          <h3 class="font-semibold mb-2">{{ p.judul }}</h3>
-          <p class="text-sm text-gray-600">
-            {{ p.deskripsi|truncatewords:20 }}
-          </p>
-        </div>
-      </div>
-      {% empty %}
-      <p class="col-span-3 text-center text-gray-500">
-        Program kerja belum tersedia.
-      </p>
-      {% endfor %}
+<!-- FOTO PROGRAM -->
+<div class="relative h-48 overflow-hidden">
 
-    </div>
-  </div>
+{% if p.foto %}
+<img src="{{ p.foto.url }}"
+class="w-full h-full object-cover
+       transition duration-500 group-hover:scale-105">
+{% else %}
+<div class="w-full h-full bg-gray-200 flex items-center justify-center">
+<span class="text-gray-400 text-sm">No Image</span>
+</div>
+{% endif %}
+
+<!-- gradient overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+
+</div>
+
+<!-- ISI CARD -->
+<div class="p-5">
+
+<h3 class="font-semibold text-lg text-gray-800 mb-2">
+{{ p.judul }}
+</h3>
+
+{% if p.tanggal %}
+<p class="text-xs text-yellow-600 font-medium mb-2">
+📅 {{ p.tanggal }}
+</p>
+{% endif %}
+
+<p class="text-sm text-gray-600 leading-relaxed">
+{{ p.deskripsi|truncatewords:20 }}
+</p>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<p class="col-span-3 text-center text-gray-500">
+Program kerja belum tersedia.
+</p>
+
+{% endfor %}
+
+</div>
+
+</div>
+</section>
 </section>
 
 

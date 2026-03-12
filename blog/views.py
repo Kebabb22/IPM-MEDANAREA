@@ -4,11 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.text import slugify
 from django.contrib import messages
-from django.core.mail import send_mail
-from django.conf import settings
 from django.http import HttpResponseForbidden
-from .models import Galeri, GaleriKategori
-from .models import Prestasi
+from django.db.models import Count, Min
 
 from .models import (
     Post,
@@ -77,27 +74,6 @@ def detail_berita(request, slug):
 
 
 # =====================================================
-# BIDANG
-# =====================================================
-def detail_bidang(request, slug):
-    bidang = get_object_or_404(Bidang, slug=slug)
-    return render(
-        request,
-        'public/Bidang/detail_bidang.html',
-        {
-            'bidang': bidang,
-            'pimpinan_harian': PersonilBidang.objects.filter(
-                bidang=bidang, jabatan__in=['ketua', 'sekretaris']
-            ),
-            'anggota': PersonilBidang.objects.filter(
-                bidang=bidang, jabatan='anggota'
-            ),
-            'program_kerja': ProgramKerja.objects.filter(bidang=bidang),
-        }
-    )
-
-
-# =====================================================
 # AUTH
 # =====================================================
 def login_public(request):
@@ -147,44 +123,45 @@ def dashboard_editor(request):
     )
 
 
+# =====================================================
+# BERITA (EDITORIAL FLOW)
+# =====================================================
 @login_required
 def tambah_berita(request):
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
         return HttpResponseForbidden()
 
     if request.method == 'POST':
+        title = request.POST.get('title')
+
         Post.objects.create(
-            title=request.POST.get('title'),
-            slug=generate_unique_slug(request.POST.get('title')),
+            title=title,
+            slug=generate_unique_slug(title),  # FIX: pastikan unik
             content=request.POST.get('content'),
             thumbnail=request.FILES.get('thumbnail'),
-            is_published=False,
+            is_published=False,               # FIX: selalu draft
         )
-        return redirect('editor_dashboard')
+
+        messages.success(
+            request,
+            'Berita berhasil disimpan dan menunggu moderasi'
+        )  # FIX: feedback UX
+
+        return redirect('semua_berita')
 
     return render(request, 'editor/tambah_berita.html')
 
-
 @login_required
-def moderasi_berita(request):
+def publish_berita(request, post_id):
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
         return HttpResponseForbidden()
 
-    return render(
-        request,
-        'editor/moderasi_berita.html',
-        {
-            'posts': Post.objects.filter(is_published=False),
-        }
-    )
-
-
-@login_required
-def publish_berita(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     post.is_published = True
     post.save()
-    return redirect('moderasi_berita')
+
+    messages.success(request, 'Berita berhasil dipublikasikan')  # FIX
+    return redirect('semua_berita')
 
 
 @login_required
@@ -193,11 +170,15 @@ def edit_berita(request, post_id):
 
     if request.method == 'POST':
         post.title = request.POST.get('title')
+        post.slug = generate_unique_slug(request.POST.get('title'))  # FIX
         post.content = request.POST.get('content')
+
         if request.FILES.get('thumbnail'):
             post.thumbnail = request.FILES['thumbnail']
+
         post.save()
-        return redirect('moderasi_berita')
+        messages.success(request, 'Berita berhasil diperbarui')  # FIX
+        return redirect('semua_berita')
 
     return render(request, 'editor/edit_berita.html', {'post': post})
 
@@ -206,10 +187,11 @@ def edit_berita(request, post_id):
 def semua_berita(request):
     if not request.user.groups.filter(name='Admin').exists():
         return HttpResponseForbidden()
+
     return render(
         request,
         'editor/semua_berita.html',
-        {'posts': Post.objects.all()}
+        {'posts': Post.objects.all().order_by('-created_at')}
     )
 
 
@@ -217,16 +199,20 @@ def semua_berita(request):
 def hapus_berita(request, post_id):
     if request.method == 'POST' and request.user.groups.filter(name='Admin').exists():
         Post.objects.filter(id=post_id).delete()
+        messages.success(request, 'Berita berhasil dihapus')  # FIX
+
     return redirect('semua_berita')
 
 
 # =====================================================
-# PRESTASI
+# PRESTASI (PUBLIC)
 # =====================================================
 def prestasi(request):
     qs = Prestasi.objects.select_related('bidang')
+
     if request.GET.get('tingkat'):
         qs = qs.filter(tingkat=request.GET['tingkat'])
+
     if request.GET.get('bidang'):
         qs = qs.filter(bidang_id=request.GET['bidang'])
 
@@ -241,24 +227,44 @@ def prestasi(request):
 
 
 # =====================================================
-# GALERI
+# GALERI (PUBLIC)
 # =====================================================
 def galeri(request):
-    qs = Galeri.objects.select_related('kategori')
-    if request.GET.get('kategori'):
-        qs = qs.filter(kategori_id=request.GET['kategori'])
+
+    album_list = (
+        Galeri.objects
+        .values('judul')
+        .annotate(
+            total=Count('id'),
+            cover=Min('foto')
+        )
+        .order_by('-judul')
+    )
 
     return render(
         request,
-        'public/Seputar_ipmmera/galeri.html',
+        "public/Seputar_ipmmera/galeri.html",
         {
-            'galeri_list': qs,
-            'kategori_list': GaleriKategori.objects.all(),
+            "album_list": album_list
         }
     )
-# ======================
+
+def detail_album(request, judul):
+
+    foto_list = Galeri.objects.filter(judul=judul)
+
+    return render(
+        request,
+        "public/Seputar_ipmmera/detail_album.html",
+        {
+            "foto_list": foto_list,
+            "judul": judul
+        }
+    )
+
+# =====================================================
 # GALERI (EDITOR)
-# ======================
+# =====================================================
 @login_required
 def editor_galeri(request):
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
@@ -282,9 +288,6 @@ def editor_galeri(request):
     )
 
 
-# ======================
-# GALERI (EDITOR)
-# ======================
 @login_required
 def tambah_galeri(request):
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
@@ -302,15 +305,15 @@ def tambah_galeri(request):
                 foto=f
             )
 
+        messages.success(request, 'Galeri berhasil ditambahkan')  # FIX
         return redirect('editor_galeri')
 
     return render(
         request,
         'editor/galeri_form.html',
-        {
-            'kategori_list': GaleriKategori.objects.all()
-        }
+        {'kategori_list': GaleriKategori.objects.all()}
     )
+
 
 @login_required
 def hapus_galeri(request, id):
@@ -319,26 +322,27 @@ def hapus_galeri(request, id):
 
     if request.method == 'POST':
         Galeri.objects.filter(id=id).delete()
+        messages.success(request, 'Galeri berhasil dihapus')  # FIX
 
     return redirect('editor_galeri')
-# ======================
+
+
+# =====================================================
 # PRESTASI (EDITOR)
-# ======================
+# =====================================================
 @login_required
 def editor_prestasi(request):
-    # Hanya Admin & Editor
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
-        return HttpResponseForbidden("Tidak punya akses")
+        return HttpResponseForbidden()
 
     prestasi_list = Prestasi.objects.select_related('bidang').order_by('-tahun')
 
     return render(
         request,
         'editor/prestasi_list.html',
-        {
-            'prestasi_list': prestasi_list
-        }
+        {'prestasi_list': prestasi_list}
     )
+
 
 @login_required
 def tambah_prestasi(request):
@@ -355,15 +359,16 @@ def tambah_prestasi(request):
             keterangan=request.POST.get('keterangan', ''),
             foto=request.FILES.get('foto'),
         )
+
+        messages.success(request, 'Prestasi berhasil ditambahkan')  # FIX
         return redirect('editor_prestasi')
 
     return render(
         request,
         'editor/prestasi_form.html',
-        {
-            'bidang_list': Bidang.objects.all()
-        }
+        {'bidang_list': Bidang.objects.all()}
     )
+
 
 @login_required
 def edit_prestasi(request, id):
@@ -384,6 +389,7 @@ def edit_prestasi(request, id):
             prestasi.foto = request.FILES['foto']
 
         prestasi.save()
+        messages.success(request, 'Prestasi berhasil diperbarui')  # FIX
         return redirect('editor_prestasi')
 
     return render(
@@ -394,17 +400,17 @@ def edit_prestasi(request, id):
             'bidang_list': Bidang.objects.all(),
         }
     )
+
+
 @login_required
 def hapus_prestasi(request, id):
-    # Hanya Admin & Editor yang boleh
     if not request.user.groups.filter(name__in=['Admin', 'Editor']).exists():
-        return HttpResponseForbidden("Tidak punya akses")
+        return HttpResponseForbidden()
 
-    # Wajib POST (aman, tidak bisa diakses via URL langsung)
     if request.method != 'POST':
-        return HttpResponseForbidden("Metode tidak diizinkan")
+        return HttpResponseForbidden()
 
-    prestasi = get_object_or_404(Prestasi, id=id)
-    prestasi.delete()
+    Prestasi.objects.filter(id=id).delete()
+    messages.success(request, 'Prestasi berhasil dihapus')  # FIX
 
     return redirect('editor_prestasi')

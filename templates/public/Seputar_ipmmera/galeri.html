@@ -1,143 +1,61 @@
 {% extends "public/base_public.html" %}
-{% load static %}
-{% block title %}Galeri Kegiatan{% endblock %}
+{% block title %}Galeri{% endblock %}
 
 {% block content %}
 
 <section class="py-16 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-6">
 
-    <!-- ================= HEADER ================= -->
-    <div class="text-center mb-10">
-      <h1 class="text-3xl font-bold text-[#157347]">
-        Galeri Kegiatan
-      </h1>
-      <p class="text-gray-500 mt-2 text-sm">
-        Dokumentasi kegiatan PC IPM Medan Area
-      </p>
-    </div>
+<div class="max-w-7xl mx-auto px-6">
 
-    <!-- ================= FILTER KATEGORI ================= -->
-    <div class="flex flex-wrap justify-center gap-3 mb-10">
+<div class="text-center mb-12">
 
-      <a href="{% url 'galeri' %}"
-         class="px-4 py-2 rounded-full text-sm border transition
-         {% if not kategori_aktif %}
-           bg-[#FFC107] text-black font-semibold
-         {% else %}
-           hover:bg-gray-100
-         {% endif %}">
-        Semua
-      </a>
+<h1 class="text-3xl font-bold text-[#157347]">
+Galeri Kegiatan
+</h1>
 
-      {% for k in kategori_list %}
-        <a href="?kategori={{ k.id }}"
-           class="px-4 py-2 rounded-full text-sm border transition
-           {% if kategori_aktif == k.id|stringformat:'s' %}
-             bg-[#FFC107] text-black font-semibold
-           {% else %}
-             hover:bg-gray-100
-           {% endif %}">
-          {{ k.nama }}
-        </a>
-      {% endfor %}
+<p class="text-gray-500 mt-2">
+Dokumentasi kegiatan PC IPM Medan Area
+</p>
 
-    </div>
-
-    <!-- ================= GALERI GRID ================= -->
-    {% if galeri_list %}
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-
-      {% for g in galeri_list %}
-      <button
-        type="button"
-        onclick="openLightbox('{{ g.foto.url }}', '{{ g.judul|escapejs }}', '{{ g.kategori.nama|escapejs }}')"
-        class="group relative rounded-xl overflow-hidden shadow
-               hover:shadow-xl transition focus:outline-none bg-white"
-      >
-
-        <img
-          src="{{ g.foto.url }}"
-          alt="{{ g.judul }}"
-          class="w-full aspect-square object-cover
-                 group-hover:scale-105 transition duration-300"
-        >
-
-        <!-- OVERLAY -->
-        <div class="absolute inset-0 bg-black/40 opacity-0
-                    group-hover:opacity-100 transition
-                    flex items-end">
-          <div class="p-3 text-left text-white w-full">
-            <p class="text-sm font-semibold truncate">
-              {{ g.judul }}
-            </p>
-            <p class="text-xs opacity-80">
-              {{ g.kategori.nama }}
-            </p>
-          </div>
-        </div>
-
-      </button>
-      {% endfor %}
-
-    </div>
-    {% else %}
-      <div class="text-center text-gray-500 text-sm bg-white p-10 rounded-xl shadow">
-        Belum ada galeri pada kategori ini.
-      </div>
-    {% endif %}
-
-  </div>
-</section>
-
-<!-- ================= LIGHTBOX ================= -->
-<div id="lightbox"
-     class="fixed inset-0 bg-black/80 hidden z-50
-            flex items-center justify-center p-4">
-
-  <div class="relative max-w-5xl w-full">
-
-    <!-- CLOSE -->
-    <button onclick="closeLightbox()"
-            class="absolute -top-10 right-0 text-white text-4xl leading-none">
-      &times;
-    </button>
-
-    <img id="lightbox-img"
-         src=""
-         alt=""
-         class="w-full max-h-[80vh] object-contain rounded-lg mx-auto">
-
-    <div class="text-center mt-4">
-      <p id="lightbox-title" class="text-white font-semibold"></p>
-      <p id="lightbox-category" class="text-gray-300 text-sm"></p>
-    </div>
-
-  </div>
 </div>
 
-{% endblock %}
 
-{% block extra_js %}
-<script>
-function openLightbox(src, title, category) {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox-title').innerText = title;
-  document.getElementById('lightbox-category').innerText = category;
-  lb.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  document.getElementById('lightbox-img').src = '';
-  lb.classList.add('hidden');
-  document.body.style.overflow = '';
-}
+{% for album in album_list %}
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeLightbox();
-});
-</script>
+<a href="{% url 'detail_album' album.judul %}"
+class="group relative overflow-hidden rounded-xl shadow hover:shadow-xl">
+
+<img
+src="/media/{{ album.cover }}"
+class="w-full h-56 object-cover
+group-hover:scale-110 transition duration-300">
+
+<div class="absolute inset-0 bg-black/40 flex items-end">
+
+<div class="p-4 text-white">
+
+<p class="font-semibold">
+{{ album.judul }}
+</p>
+
+<p class="text-sm opacity-80">
+{{ album.total }} Foto
+</p>
+
+</div>
+
+</div>
+
+</a>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+</section>
+
 {% endblock %}

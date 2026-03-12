@@ -1,0 +1,238 @@
+{% extends "editor/base_editor.html" %}
+
+{% block title %}
+{% if bidang %}Edit Bidang{% else %}Tambah Bidang{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto space-y-10 animate-fadeIn">
+
+<!-- ================= HERO ================= -->
+
+<div class="relative overflow-hidden rounded-3xl
+            bg-gradient-to-r from-[#F6C700] to-yellow-400
+            p-8 text-black shadow-2xl">
+
+<h1 class="text-3xl font-extrabold">
+{% if bidang %}✏️ Edit Bidang{% else %}📚 Tambah Bidang{% endif %}
+</h1>
+
+<p class="opacity-80">
+Kelola bidang organisasi
+</p>
+
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl"></div>
+
+</div>
+
+
+<!-- ================= FORM ================= -->
+
+<form method="post"
+      enctype="multipart/form-data"
+      class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 space-y-6">
+
+{% csrf_token %}
+
+<!-- NAMA BIDANG -->
+
+<div>
+<label class="label">
+Nama Bidang
+</label>
+
+<input type="text"
+name="nama"
+value="{{ bidang.nama|default:'' }}"
+required
+class="input">
+</div>
+
+
+<!-- SLUG -->
+
+<div>
+<label class="label">
+Slug URL
+</label>
+
+<input type="text"
+name="slug"
+value="{{ bidang.slug|default:'' }}"
+placeholder="contoh: kaderisasi"
+required
+class="input">
+</div>
+
+
+<!-- FOTO BIDANG -->
+
+<div>
+
+<label class="label">Foto Bidang</label>
+
+{% if bidang and bidang.foto %}
+<div class="mb-4">
+<p class="text-xs text-gray-500 mb-2">Foto saat ini:</p>
+
+<img src="{{ bidang.foto.url }}"
+     class="w-40 h-32 object-cover rounded-xl shadow">
+</div>
+{% endif %}
+
+<label for="fotoInput"
+class="block cursor-pointer rounded-2xl border-2 border-dashed
+       border-gray-300 dark:border-slate-600
+       p-6 text-center transition
+       hover:border-yellow-400 hover:bg-yellow-50/40
+       dark:hover:bg-slate-700">
+
+<input id="fotoInput"
+       type="file"
+       name="foto"
+       accept="image/*"
+       class="hidden">
+
+<div id="fotoPlaceholder">
+<div class="text-3xl mb-1">🖼️</div>
+<p class="font-medium">Klik untuk upload foto bidang</p>
+<p class="text-xs text-gray-500">JPG / PNG</p>
+</div>
+
+<div id="fotoPreview" class="hidden mt-4">
+<img id="fotoImg"
+     class="mx-auto rounded-xl shadow-lg max-h-56 object-cover">
+
+<p class="text-xs text-gray-500 mt-2">
+Preview foto
+</p>
+</div>
+
+</label>
+
+</div>
+
+
+<!-- DESKRIPSI -->
+
+<div>
+<label class="label">
+Deskripsi
+</label>
+
+<textarea name="deskripsi"
+rows="4"
+class="input resize-y">{{ bidang.deskripsi|default:'' }}</textarea>
+
+</div>
+
+
+<!-- ACTION -->
+
+<div class="flex justify-end gap-4 pt-4">
+
+<a href="{% url 'editor_bidang' %}"
+class="btn-secondary">
+Batal
+</a>
+
+<button class="btn-primary">
+💾 Simpan
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+
+<!-- ================= STYLE ================= -->
+
+<style>
+
+.label{
+display:block;
+font-size:.85rem;
+font-weight:600;
+margin-bottom:.25rem;
+}
+
+.input{
+width:100%;
+padding:.75rem 1rem;
+border-radius:1rem;
+border:1px solid #d1d5db;
+background:transparent;
+transition:.3s;
+}
+
+.input:focus{
+outline:none;
+border-color:#F6C700;
+box-shadow:0 0 0 4px rgba(246,199,0,.35);
+}
+
+.btn-primary{
+padding:.8rem 2rem;
+border-radius:1.25rem;
+font-weight:700;
+background:#F6C700;
+color:black;
+box-shadow:0 14px 30px rgba(246,199,0,.45);
+transition:.3s;
+}
+
+.btn-primary:hover{
+transform:translateY(-3px) scale(1.04);
+background:#facc15;
+}
+
+.btn-secondary{
+padding:.8rem 2rem;
+border-radius:1.25rem;
+border:1px solid #d1d5db;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-secondary:hover{
+background:#f1f5f9;
+}
+
+</style>
+
+
+<!-- ================= JS PREVIEW FOTO ================= -->
+
+<script>
+
+const fotoInput = document.getElementById('fotoInput');
+const fotoPreview = document.getElementById('fotoPreview');
+const fotoImg = document.getElementById('fotoImg');
+const fotoPlaceholder = document.getElementById('fotoPlaceholder');
+
+fotoInput?.addEventListener('change',()=>{
+
+const file = fotoInput.files[0];
+
+if(!file) return;
+
+const reader = new FileReader();
+
+reader.onload = e=>{
+fotoImg.src = e.target.result;
+
+fotoPreview.classList.remove('hidden');
+fotoPlaceholder.classList.add('hidden');
+};
+
+reader.readAsDataURL(file);
+
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,249 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}
+  {% if prestasi %}Edit Prestasi{% else %}Tambah Prestasi{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-10 animate-fadeIn">
+
+  <!-- ================= HERO HEADER ================= -->
+  <div class="relative overflow-hidden rounded-3xl
+              bg-gradient-to-r from-[#F6C700] to-yellow-400
+              p-8 text-black shadow-2xl">
+
+    <h1 class="text-3xl font-extrabold">
+      {% if prestasi %}✏️ Edit Prestasi{% else %}🏆 Tambah Prestasi{% endif %}
+    </h1>
+    <p class="mt-1 opacity-80 max-w-xl">
+      Kelola data prestasi kader PC IPM Medan Area
+    </p>
+
+    <!-- glow -->
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ================= FORM CARD ================= -->
+  <form method="post"
+        enctype="multipart/form-data"
+        class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 space-y-8">
+
+    {% csrf_token %}
+
+    <!-- ================= GRID ================= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- NAMA -->
+      <div>
+        <label class="label">Nama Prestasi</label>
+        <input type="text"
+               name="nama"
+               value="{{ prestasi.nama|default:'' }}"
+               required
+               class="input">
+      </div>
+
+      <!-- TAHUN -->
+      <div>
+        <label class="label">Tahun</label>
+        <input type="number"
+               name="tahun"
+               value="{{ prestasi.tahun|default:'' }}"
+               required
+               class="input">
+      </div>
+
+      <!-- CAPAIAN -->
+      <div class="md:col-span-2">
+        <label class="label">Capaian</label>
+        <input type="text"
+               name="capaian"
+               value="{{ prestasi.capaian|default:'' }}"
+               required
+               class="input">
+      </div>
+
+      <!-- BIDANG -->
+      <div>
+        <label class="label">Bidang</label>
+        <select name="bidang" class="input">
+          <option value="">— Pilih Bidang —</option>
+          {% for b in bidang_list %}
+            <option value="{{ b.id }}"
+              {% if prestasi and prestasi.bidang and prestasi.bidang.id == b.id %}
+                selected
+              {% endif %}>
+              {{ b.nama }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- TINGKAT -->
+      <div>
+        <label class="label">Tingkat</label>
+        <select name="tingkat" required class="input">
+          <option value="lokal" {% if prestasi.tingkat == 'lokal' %}selected{% endif %}>Lokal</option>
+          <option value="daerah" {% if prestasi.tingkat == 'daerah' %}selected{% endif %}>Daerah</option>
+          <option value="nasional" {% if prestasi.tingkat == 'nasional' %}selected{% endif %}>Nasional</option>
+          <option value="internasional" {% if prestasi.tingkat == 'internasional' %}selected{% endif %}>Internasional</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- KETERANGAN -->
+    <div>
+      <label class="label">Keterangan</label>
+      <textarea name="keterangan"
+                rows="4"
+                class="input resize-y">{{ prestasi.keterangan|default:'' }}</textarea>
+    </div>
+
+    <!-- ================= FOTO ================= -->
+    <div>
+      <label class="label">Foto Prestasi</label>
+
+      {% if prestasi and prestasi.foto %}
+      <div class="mb-4">
+        <p class="text-xs text-gray-500 mb-2">Foto saat ini:</p>
+        <img src="{{ prestasi.foto.url }}"
+             class="w-36 h-36 object-cover rounded-xl shadow">
+      </div>
+      {% endif %}
+
+      <!-- DROPZONE -->
+      <label for="fotoInput"
+             class="block cursor-pointer rounded-2xl border-2 border-dashed
+                    border-gray-300 dark:border-slate-600
+                    p-6 text-center transition
+                    hover:border-yellow-400 hover:bg-yellow-50/40
+                    dark:hover:bg-slate-700">
+
+        <input id="fotoInput"
+               type="file"
+               name="foto"
+               accept="image/*"
+               class="hidden">
+
+        <div id="fotoPlaceholder">
+          <div class="text-3xl mb-1">📷</div>
+          <p class="font-medium">Klik untuk upload foto prestasi</p>
+          <p class="text-xs text-gray-500">JPG / PNG • Opsional</p>
+        </div>
+
+        <div id="fotoPreview" class="hidden mt-4">
+          <img id="fotoImg"
+               class="mx-auto rounded-xl shadow-lg max-h-56 object-cover">
+          <p class="text-xs text-gray-500 mt-2">
+            Pratinjau foto
+          </p>
+        </div>
+
+      </label>
+    </div>
+
+    <!-- ================= ACTION ================= -->
+    <div class="flex flex-wrap justify-end gap-4 pt-6">
+
+      <a href="{% url 'editor_prestasi' %}"
+         class="btn-secondary">
+        ← Batal
+      </a>
+
+      <button type="submit"
+              class="btn-primary">
+        💾 Simpan
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
+
+<!-- ================= STYLE ================= -->
+<style>
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.animate-fadeIn{
+  animation:fadeIn .7s ease-out both
+}
+
+.label{
+  display:block;
+  font-size:.85rem;
+  font-weight:600;
+  margin-bottom:.25rem;
+}
+
+.input{
+  width:100%;
+  padding:.75rem 1rem;
+  border-radius:1rem;
+  border:1px solid #d1d5db;
+  background:transparent;
+  transition:.3s;
+}
+.dark .input{
+  border-color:#475569;
+}
+.input:focus{
+  outline:none;
+  border-color:#F6C700;
+  box-shadow:0 0 0 4px rgba(246,199,0,.35);
+}
+
+/* BUTTON */
+.btn-primary{
+  padding:.8rem 2rem;
+  border-radius:1.25rem;
+  font-weight:700;
+  background:#F6C700;
+  color:black;
+  box-shadow:0 14px 30px rgba(246,199,0,.45);
+  transition:.3s;
+}
+.btn-primary:hover{
+  transform:translateY(-3px) scale(1.04);
+  background:#facc15;
+}
+
+.btn-secondary{
+  padding:.8rem 2rem;
+  border-radius:1.25rem;
+  border:1px solid #d1d5db;
+  font-weight:600;
+  transition:.3s;
+}
+.btn-secondary:hover{
+  background:#f1f5f9;
+}
+.dark .btn-secondary:hover{
+  background:#334155;
+}
+</style>
+
+<!-- ================= JS (PREVIEW FOTO UX) ================= -->
+<script>
+const fotoInput = document.getElementById('fotoInput');
+const fotoPreview = document.getElementById('fotoPreview');
+const fotoImg = document.getElementById('fotoImg');
+const fotoPlaceholder = document.getElementById('fotoPlaceholder');
+
+fotoInput?.addEventListener('change',()=>{
+  const file = fotoInput.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e=>{
+    fotoImg.src = e.target.result;
+    fotoPreview.classList.remove('hidden');
+    fotoPlaceholder.classList.add('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+
+{% endblock %}

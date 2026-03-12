@@ -1,0 +1,133 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Kelola Galeri{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl">
+
+<!-- ================= HEADER ================= -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+
+<div>
+<h1 class="text-2xl font-bold text-gray-800">
+Kelola Galeri
+</h1>
+
+<p class="text-sm text-gray-500">
+Kelola dokumentasi foto kegiatan
+</p>
+</div>
+
+<a href="{% url 'tambah_galeri' %}"
+class="inline-flex items-center gap-2
+bg-[#FFC107] hover:bg-yellow-500
+text-black font-semibold
+px-5 py-2 rounded-lg transition">
+
+<span class="text-lg">＋</span>
+Tambah Galeri
+
+</a>
+
+</div>
+
+
+
+<!-- ================= GALERI GRID ================= -->
+{% if galeri_list %}
+
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+
+{% for g in galeri_list %}
+
+<div class="group bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+
+<!-- IMAGE -->
+<div class="relative">
+
+<img
+src="{{ g.foto.url }}"
+alt="{{ g.judul }}"
+class="w-full h-40 object-cover">
+
+<!-- ACTION -->
+<div class="absolute inset-0 bg-black/50 flex items-center justify-center
+opacity-0 group-hover:opacity-100 transition">
+
+<form method="post"
+action="{% url 'hapus_galeri' g.id %}">
+
+{% csrf_token %}
+
+<button
+type="submit"
+onclick="return confirm('Yakin ingin menghapus foto ini?')"
+class="bg-red-600 hover:bg-red-700
+text-white text-sm
+px-4 py-2 rounded-lg">
+
+Hapus
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- INFO -->
+<div class="p-3">
+
+<p class="text-sm font-semibold text-gray-800 truncate">
+{{ g.judul }}
+</p>
+
+<p class="text-xs text-gray-500">
+{{ g.kategori.nama }}
+</p>
+
+{% if g.created_at %}
+<p class="text-xs text-gray-400 mt-1">
+{{ g.created_at|date:"d M Y" }}
+</p>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<!-- EMPTY STATE -->
+<div class="bg-white rounded-xl shadow p-12 text-center">
+
+<div class="text-4xl mb-3">
+🖼
+</div>
+
+<p class="text-gray-600 mb-4">
+Belum ada galeri yang ditambahkan
+</p>
+
+<a href="{% url 'tambah_galeri' %}"
+class="inline-block bg-[#FFC107] hover:bg-yellow-500
+text-black font-semibold
+px-5 py-2 rounded-lg">
+
+Tambah Galeri Pertama
+
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Tambah Berita{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-12 animate-fadeIn">
+
+  <!-- ================= HERO HEADER ================= -->
+  <div class="relative overflow-hidden rounded-3xl
+              bg-gradient-to-br from-[#F6C700] via-yellow-400 to-amber-500
+              p-8 text-black shadow-2xl">
+
+    <h1 class="text-3xl md:text-4xl font-extrabold">
+      ✏️ Tambah Berita
+    </h1>
+    <p class="mt-1 opacity-80 max-w-lg">
+      Buat berita baru dengan tampilan profesional dan siap dipublikasikan
+    </p>
+
+    <!-- glow -->
+    <div class="absolute -top-10 -right-10 w-44 h-44 bg-white/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ================= FORM ================= -->
+  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8">
+
+    <form method="post" enctype="multipart/form-data" class="space-y-10">
+      {% csrf_token %}
+
+      <!-- ================= JUDUL ================= -->
+      <div class="group">
+        <label class="block text-sm font-semibold mb-1">
+          Judul Berita
+        </label>
+
+        <input
+          type="text"
+          name="title"
+          required
+          placeholder="Judul singkat, jelas, dan menarik"
+          class="input"
+        >
+
+        <p class="helper-text">
+          Judul yang baik meningkatkan keterbacaan berita
+        </p>
+      </div>
+
+      <!-- ================= KONTEN ================= -->
+      <div class="group">
+        <label class="block text-sm font-semibold mb-1">
+          Isi Berita
+        </label>
+
+        <textarea
+          name="content"
+          rows="10"
+          required
+          placeholder="Tulis isi berita dengan struktur yang rapi dan jelas..."
+          class="input resize-y"
+        ></textarea>
+
+        <p class="helper-text">
+          Gunakan bahasa jurnalistik dan informatif
+        </p>
+      </div>
+
+      <!-- ================= THUMBNAIL ================= -->
+      <div class="group">
+        <label class="block text-sm font-semibold mb-2">
+          Thumbnail Berita
+        </label>
+
+        <!-- DROPZONE -->
+        <label for="thumbInput"
+          class="relative block cursor-pointer rounded-2xl border-2 border-dashed
+                 border-gray-300 dark:border-slate-600
+                 p-6 text-center transition
+                 hover:border-yellow-400 hover:bg-yellow-50/40
+                 dark:hover:bg-slate-700">
+
+          <input
+            id="thumbInput"
+            type="file"
+            name="thumbnail"
+            accept="image/*"
+            class="hidden"
+          >
+
+          <!-- PLACEHOLDER -->
+          <div id="thumbPlaceholder" class="space-y-2">
+            <div class="text-3xl">🖼️</div>
+            <p class="font-medium">
+              Klik untuk upload thumbnail
+            </p>
+            <p class="text-xs text-gray-500">
+              JPG / PNG • Opsional
+            </p>
+          </div>
+
+          <!-- PREVIEW -->
+          <div id="thumbPreview"
+               class="hidden mt-4">
+            <img
+              id="thumbImg"
+              class="mx-auto rounded-xl shadow-lg max-h-56 object-cover"
+            >
+            <p class="text-xs text-gray-500 mt-2">
+              Pratinjau thumbnail
+            </p>
+          </div>
+
+        </label>
+      </div>
+
+      <!-- ================= ACTION ================= -->
+      <div class="flex flex-wrap gap-4 pt-6">
+
+        <button
+          type="submit"
+          class="btn-primary"
+        >
+          💾 Simpan sebagai Draft
+        </button>
+
+        <a
+          href="{% url 'editor_dashboard' %}"
+          class="btn-secondary"
+        >
+          ← Batal
+        </a>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- ================= STYLE ================= -->
+<style>
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.animate-fadeIn{
+  animation:fadeIn .7s ease-out both
+}
+
+/* INPUT */
+.input{
+  width:100%;
+  padding:.75rem 1rem;
+  border-radius:1rem;
+  border:1px solid #d1d5db;
+  background:transparent;
+  transition:.3s;
+}
+.dark .input{
+  border-color:#475569;
+}
+.input:focus{
+  outline:none;
+  border-color:#F6C700;
+  box-shadow:0 0 0 4px rgba(246,199,0,.35);
+}
+
+.helper-text{
+  font-size:.75rem;
+  color:#6b7280;
+  margin-top:.25rem;
+}
+
+/* BUTTON */
+.btn-primary{
+  padding:.85rem 2rem;
+  border-radius:1.25rem;
+  font-weight:700;
+  background:#F6C700;
+  color:black;
+  box-shadow:0 14px 30px rgba(246,199,0,.4);
+  transition:.3s;
+}
+.btn-primary:hover{
+  transform:translateY(-3px) scale(1.03);
+  background:#facc15;
+}
+
+.btn-secondary{
+  padding:.85rem 2rem;
+  border-radius:1.25rem;
+  border:1px solid #d1d5db;
+  font-weight:600;
+  transition:.3s;
+}
+.btn-secondary:hover{
+  background:#f1f5f9;
+}
+.dark .btn-secondary:hover{
+  background:#334155;
+}
+</style>
+
+<!-- ================= JS (THUMBNAIL PREVIEW UX) ================= -->
+<script>
+const input = document.getElementById('thumbInput');
+const preview = document.getElementById('thumbPreview');
+const img = document.getElementById('thumbImg');
+const placeholder = document.getElementById('thumbPlaceholder');
+
+input?.addEventListener('change',()=>{
+  const file = input.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e=>{
+    img.src = e.target.result;
+    preview.classList.remove('hidden');
+    placeholder.classList.add('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+
+{% endblock %}

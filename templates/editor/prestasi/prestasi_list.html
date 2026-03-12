@@ -1,0 +1,193 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Kelola Prestasi{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-10 animate-fadeIn">
+
+  <!-- ================= HERO HEADER ================= -->
+  <div class="relative overflow-hidden rounded-3xl
+              bg-gradient-to-r from-[#F6C700] to-yellow-400
+              p-8 text-black shadow-2xl">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold">
+          🏆 Kelola Prestasi
+        </h1>
+        <p class="mt-1 opacity-80 max-w-xl">
+          Data prestasi kader PC IPM Medan Area
+        </p>
+      </div>
+
+      <a href="{% url 'tambah_prestasi' %}"
+         class="btn-primary">
+        ➕ Tambah Prestasi
+      </a>
+    </div>
+
+    <!-- glow -->
+    <div class="absolute -top-10 -right-10 w-44 h-44 bg-white/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <!-- ================= TABLE CARD ================= -->
+  <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-x-auto">
+
+    <table class="w-full text-sm">
+      <thead class="bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-200">
+        <tr>
+          <th class="p-5 text-left font-semibold">Nama</th>
+          <th class="p-5 text-left font-semibold">Capaian</th>
+          <th class="p-5 text-left font-semibold">Bidang</th>
+          <th class="p-5 text-center font-semibold">Tingkat</th>
+          <th class="p-5 text-center font-semibold">Tahun</th>
+          <th class="p-5 text-center font-semibold">Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {% for p in prestasi_list %}
+        <tr class="group border-t dark:border-slate-700
+                   hover:bg-yellow-50/60 dark:hover:bg-slate-700/50
+                   transition">
+
+          <!-- NAMA -->
+          <td class="p-5 font-semibold">
+            {{ p.nama }}
+          </td>
+
+          <!-- CAPAIAN -->
+          <td class="p-5 text-gray-600 dark:text-gray-300">
+            {{ p.capaian }}
+          </td>
+
+          <!-- BIDANG -->
+          <td class="p-5 text-gray-500 dark:text-gray-400">
+            {{ p.bidang.nama|default:"-" }}
+          </td>
+
+          <!-- TINGKAT -->
+          <td class="p-5 text-center">
+            <span class="badge-level {{ p.tingkat }}">
+              {{ p.tingkat|title }}
+            </span>
+          </td>
+
+          <!-- TAHUN -->
+          <td class="p-5 text-center font-medium">
+            {{ p.tahun }}
+          </td>
+
+          <!-- AKSI -->
+          <td class="p-5 text-center">
+            <div class="flex flex-wrap justify-center gap-2">
+
+              <a href="{% url 'edit_prestasi' p.id %}"
+                 class="action-btn bg-blue-500 hover:bg-blue-600 text-white">
+                ✏️ Edit
+              </a>
+
+              <form method="post"
+                    action="{% url 'hapus_prestasi' p.id %}"
+                    onsubmit="return confirm('Yakin hapus prestasi ini?')">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="action-btn bg-red-600 hover:bg-red-700 text-white">
+                  🗑️ Hapus
+                </button>
+              </form>
+
+            </div>
+          </td>
+
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="p-10 text-center text-gray-500">
+            Belum ada data prestasi yang ditambahkan.
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<!-- ================= STYLE ================= -->
+<style>
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+.animate-fadeIn{
+  animation:fadeIn .7s ease-out both
+}
+
+/* BUTTON PRIMARY */
+.btn-primary{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.75rem 1.6rem;
+  border-radius:1.25rem;
+  font-weight:700;
+  background:#F6C700;
+  color:black;
+  box-shadow:0 14px 30px rgba(246,199,0,.45);
+  transition:.3s;
+}
+.btn-primary:hover{
+  transform:translateY(-3px) scale(1.04);
+  background:#facc15;
+}
+
+/* LEVEL BADGE */
+.badge-level{
+  display:inline-flex;
+  align-items:center;
+  padding:.3rem .8rem;
+  border-radius:999px;
+  font-size:.7rem;
+  font-weight:700;
+}
+.badge-level.lokal{
+  background:#e0f2fe;
+  color:#0369a1;
+}
+.badge-level.kabupaten{
+  background:#dcfce7;
+  color:#166534;
+}
+.badge-level.provinsi{
+  background:#fef3c7;
+  color:#92400e;
+}
+.badge-level.nasional{
+  background:#fae8ff;
+  color:#86198f;
+}
+.dark .badge-level.lokal{background:rgba(2,132,199,.15);color:#7dd3fc}
+.dark .badge-level.kabupaten{background:rgba(34,197,94,.15);color:#4ade80}
+.dark .badge-level.provinsi{background:rgba(246,199,0,.15);color:#F6C700}
+.dark .badge-level.nasional{background:rgba(217,70,239,.15);color:#f0abfc}
+
+/* ACTION BUTTON */
+.action-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.45rem .85rem;
+  border-radius:.75rem;
+  font-size:.75rem;
+  font-weight:600;
+  transition:.25s;
+  box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+.action-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+}
+</style>
+
+{% endblock %}

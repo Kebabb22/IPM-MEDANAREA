@@ -1,0 +1,164 @@
+{% extends "editor/base_editor.html" %}
+
+{% block title %}
+{% if pimpinan %}Edit Pimpinan{% else %}Tambah Pimpinan{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto space-y-10 animate-fadeIn">
+
+<!-- HEADER -->
+<div class="relative overflow-hidden rounded-3xl
+            bg-gradient-to-r from-[#F6C700] to-yellow-400
+            p-8 text-black shadow-2xl">
+
+<h1 class="text-3xl font-extrabold">
+{% if pimpinan %}✏️ Edit Pimpinan{% else %}👑 Tambah Pimpinan{% endif %}
+</h1>
+
+<p class="opacity-80">
+Kelola pimpinan PC IPM Medan Area
+</p>
+
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-3xl"></div>
+
+</div>
+
+<!-- FORM -->
+<form method="post"
+      enctype="multipart/form-data"
+      class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 space-y-8">
+
+{% csrf_token %}
+
+<div class="grid md:grid-cols-2 gap-6">
+
+<!-- NAMA -->
+<div>
+<label class="label">Nama</label>
+<input type="text"
+       name="nama"
+       value="{{ pimpinan.nama|default:'' }}"
+       required
+       class="input">
+</div>
+
+<!-- JABATAN -->
+<div>
+<label class="label">Jabatan</label>
+<input type="text"
+       name="jabatan"
+       value="{{ pimpinan.jabatan|default:'' }}"
+       required
+       class="input">
+</div>
+
+</div>
+
+<!-- FOTO -->
+<div>
+
+<label class="label">Foto</label>
+
+{% if pimpinan and pimpinan.foto %}
+<div class="mb-4">
+<img src="{{ pimpinan.foto.url }}"
+     class="w-32 h-32 rounded-xl object-cover">
+</div>
+{% endif %}
+
+<label for="fotoInput"
+class="block cursor-pointer border-2 border-dashed rounded-2xl p-6 text-center">
+
+<input type="file"
+       name="foto"
+       id="fotoInput"
+       accept="image/*"
+       class="hidden">
+
+<div id="placeholder">
+📷 Klik upload foto
+</div>
+
+<div id="preview" class="hidden mt-4">
+<img id="imgPreview"
+class="mx-auto max-h-56 rounded-xl shadow">
+</div>
+
+</label>
+
+</div>
+
+<!-- BUTTON -->
+<div class="flex justify-end gap-4 pt-6">
+
+<a href="{% url 'editor_pimpinan' %}"
+class="btn-secondary">
+Batal
+</a>
+
+<button class="btn-primary">
+💾 Simpan
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<style>
+
+.label{
+font-weight:600;
+margin-bottom:4px;
+display:block;
+}
+
+.input{
+width:100%;
+padding:.7rem 1rem;
+border-radius:1rem;
+border:1px solid #ddd;
+}
+
+.btn-primary{
+padding:.8rem 1.6rem;
+border-radius:1.2rem;
+background:#F6C700;
+font-weight:700;
+}
+
+.btn-secondary{
+padding:.8rem 1.6rem;
+border-radius:1.2rem;
+border:1px solid #ddd;
+}
+
+</style>
+
+<script>
+const input = document.getElementById('fotoInput')
+const preview = document.getElementById('preview')
+const img = document.getElementById('imgPreview')
+const placeholder = document.getElementById('placeholder')
+
+input?.addEventListener('change',()=>{
+const file = input.files[0]
+if(!file) return
+
+const reader = new FileReader()
+
+reader.onload = e=>{
+img.src = e.target.result
+preview.classList.remove('hidden')
+placeholder.classList.add('hidden')
+}
+
+reader.readAsDataURL(file)
+
+})
+</script>
+
+{% endblock %}

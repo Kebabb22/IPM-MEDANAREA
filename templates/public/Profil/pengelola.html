@@ -1,0 +1,95 @@
+{% extends "public/base_public.html" %}
+{% load static %}
+
+{% block title %}Pengelola Website{% endblock %}
+{% block content %}
+
+<section class="max-w-7xl mx-auto px-6 py-20">
+
+  <!-- ================= KETUA ================= -->
+  <div class="text-center mb-20">
+    <h2 class="text-3xl font-extrabold text-[#157347]">
+      Ketua Pengelola Website
+    </h2>
+
+    {% if ketua %}
+      <div class="mt-10 flex justify-center">
+        <div class="w-72 bg-white rounded-2xl shadow-lg p-6">
+
+          <div class="w-32 h-32 mx-auto rounded-full overflow-hidden
+                      bg-gray-200 flex items-center justify-center">
+            {% if ketua.foto %}
+              <img src="{{ ketua.foto.url }}"
+                   class="w-full h-full object-cover">
+            {% else %}
+              <span class="text-4xl font-bold text-gray-500">
+                {{ ketua.nama|slice:":1"|upper }}
+              </span>
+            {% endif %}
+          </div>
+
+          <h3 class="mt-4 text-xl font-bold">
+            {{ ketua.nama }}
+          </h3>
+
+          <p class="text-sm text-gray-500">
+            {{ ketua.organisasi }}
+          </p>
+
+          <span class="inline-block mt-3 px-4 py-1 text-sm font-semibold
+                       rounded-full bg-yellow-400 text-black">
+            Ketua Website
+          </span>
+        </div>
+      </div>
+    {% else %}
+      <p class="mt-6 text-gray-500">
+        Ketua pengelola belum ditetapkan
+      </p>
+    {% endif %}
+  </div>
+
+  <!-- ================= EDITOR ================= -->
+  <div class="text-center mb-10">
+    <h2 class="text-3xl font-extrabold text-[#157347]">
+      Editor Website
+    </h2>
+    <p class="text-gray-500 mt-1">
+      Tim editor dari berbagai organisasi
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    {% for e in editor %}
+      <div class="bg-white rounded-2xl shadow-md p-6 text-center">
+
+        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden
+                    bg-gray-200 flex items-center justify-center">
+          {% if e.foto %}
+            <img src="{{ e.foto.url }}"
+                 class="w-full h-full object-cover">
+          {% else %}
+            <span class="text-3xl font-bold text-gray-500">
+              {{ e.nama|slice:":1"|upper }}
+            </span>
+          {% endif %}
+        </div>
+
+        <h4 class="mt-4 font-semibold">
+          {{ e.nama }}
+        </h4>
+
+        <p class="text-sm text-gray-500">
+          {{ e.organisasi }}
+        </p>
+      </div>
+    {% empty %}
+      <p class="col-span-full text-center text-gray-500">
+        Belum ada editor aktif
+      </p>
+    {% endfor %}
+  </div>
+
+</section>
+
+{% endblock %}

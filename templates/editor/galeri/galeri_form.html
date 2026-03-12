@@ -1,0 +1,237 @@
+{% extends "editor/base_editor.html" %}
+{% block title %}Tambah Galeri{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto">
+
+<div class="mb-6">
+<h1 class="text-2xl font-bold text-gray-800">
+Upload Galeri
+</h1>
+<p class="text-sm text-gray-500">
+Upload banyak foto kegiatan sekaligus
+</p>
+</div>
+
+
+<form method="post"
+enctype="multipart/form-data"
+class="bg-white rounded-xl shadow p-6 space-y-6">
+
+{% csrf_token %}
+
+
+<!-- JUDUL -->
+<div>
+
+<label class="block text-sm font-semibold text-gray-700 mb-2">
+Judul Kegiatan
+</label>
+
+<input
+type="text"
+name="judul"
+required
+placeholder="Contoh: Musyawarah Cabang 2025"
+class="w-full border rounded-lg px-4 py-2 text-sm
+focus:outline-none focus:ring-2 focus:ring-yellow-400">
+
+</div>
+
+
+<!-- UPLOAD FOTO -->
+<div>
+
+<label class="block text-sm font-semibold text-gray-700 mb-2">
+Upload Foto
+</label>
+
+
+<div id="dropzone"
+class="border-2 border-dashed border-gray-300 rounded-xl p-10
+text-center cursor-pointer hover:bg-gray-50 transition">
+
+<p class="text-gray-500 text-sm">
+Klik atau drag foto ke sini
+</p>
+
+<input
+id="fotoInput"
+type="file"
+name="foto"
+multiple
+required
+accept="image/*"
+class="hidden">
+
+</div>
+
+</div>
+
+
+<!-- PREVIEW -->
+<div id="preview"
+class="grid grid-cols-3 gap-4 hidden"></div>
+
+
+<div class="flex justify-end gap-3 pt-4 border-t">
+
+<a href="{% url 'editor_galeri' %}"
+class="px-5 py-2 rounded-lg border text-sm hover:bg-gray-100">
+Batal
+</a>
+
+<button
+type="submit"
+class="bg-[#FFC107] hover:bg-yellow-500
+text-black font-semibold px-6 py-2 rounded-lg">
+
+Upload Foto
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+{% block extra_js %}
+
+<script>
+
+const dropzone = document.getElementById("dropzone");
+const input = document.getElementById("fotoInput");
+const preview = document.getElementById("preview");
+
+let fileStore = new DataTransfer();
+
+
+// klik dropzone
+dropzone.addEventListener("click", () => {
+    input.click();
+});
+
+
+// pilih file dari file manager
+input.addEventListener("change", () => {
+
+    Array.from(input.files).forEach(file => {
+        fileStore.items.add(file);
+    });
+
+    input.files = fileStore.files;
+
+    renderPreview();
+
+});
+
+
+// drag over
+dropzone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropzone.classList.add("bg-gray-100");
+});
+
+
+// drag leave
+dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("bg-gray-100");
+});
+
+
+// drop file
+dropzone.addEventListener("drop", (e) => {
+
+    e.preventDefault();
+
+    dropzone.classList.remove("bg-gray-100");
+
+    const files = e.dataTransfer.files;
+
+    Array.from(files).forEach(file => {
+        fileStore.items.add(file);
+    });
+
+    input.files = fileStore.files;
+
+    renderPreview();
+
+});
+
+
+
+function renderPreview(){
+
+preview.innerHTML = "";
+
+if(!fileStore.files.length){
+    preview.classList.add("hidden");
+    return;
+}
+
+preview.classList.remove("hidden");
+
+Array.from(fileStore.files).forEach((file,index)=>{
+
+    if(!file.type.startsWith("image/")) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        const div = document.createElement("div");
+
+        div.className = "relative";
+
+        div.innerHTML = `
+        
+        <img
+        src="${e.target.result}"
+        class="w-full aspect-square object-cover rounded-lg shadow">
+
+        <button
+        onclick="removeImage(${index})"
+        type="button"
+        class="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded">
+        ✕
+        </button>
+
+        `;
+
+        preview.appendChild(div);
+
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+}
+
+
+
+function removeImage(index){
+
+const newStore = new DataTransfer();
+
+Array.from(fileStore.files).forEach((file,i)=>{
+    if(i !== index){
+        newStore.items.add(file);
+    }
+});
+
+fileStore = newStore;
+
+input.files = fileStore.files;
+
+renderPreview();
+
+}
+
+</script>
+
+
+{% endblock %}
+
+{% endblock %}

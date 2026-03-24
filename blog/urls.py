@@ -308,4 +308,9 @@ path('editor/program/hapus/<int:id>/', views_editor.hapus_program_kerja, name='h
         views_editor.pengelola_hapus,
         name='editor_pengelola_hapus'
     ),
+path('api/berita/', views.api_berita),
+path('api/berita/<slug:slug>/', views.api_detail_berita),
+
+path('api/bidang/', views.api_bidang),
+path('api/bidang/<slug:slug>/', views.api_detail_bidang),
 ]

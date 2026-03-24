@@ -9,7 +9,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-p9uygh-gj5kns-+s)4lej-)*&a@2s_x6z-wvq61cz$57%_4e)6'
+import os
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret')    
 
 DEBUG = False
 
@@ -25,10 +26,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'blog',
+
+    'rest_framework', 
+     'corsheaders', # ✅ TAMBAHKAN INI
 ]
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
@@ -38,8 +43,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
- # 'blog.middleware.EditorRedirectMiddleware',
 ]
 
 
@@ -126,3 +129,11 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/editor/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
+CORS_ALLOW_ALL_ORIGINS = True
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

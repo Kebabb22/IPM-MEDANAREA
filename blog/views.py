@@ -414,3 +414,124 @@ def hapus_prestasi(request, id):
     messages.success(request, 'Prestasi berhasil dihapus')  # FIX
 
     return redirect('editor_prestasi')
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+# =====================================================
+# API TEST
+# =====================================================
+@api_view(['GET'])
+def api_test(request):
+    return Response({
+        "status": "API aktif",
+        "project": "IPM Backend 🚀"
+    })
+
+
+# =====================================================
+# API BERITA LIST
+# =====================================================
+@api_view(['GET'])
+def api_berita(request):
+    posts = Post.objects.filter(is_published=True).order_by('-created_at')
+
+    data = []
+    for p in posts:
+        data.append({
+            "id": p.id,
+            "title": p.title,
+            "slug": p.slug,
+            "content": p.content,
+            "thumbnail": p.thumbnail.url if p.thumbnail else None,
+            "created_at": p.created_at,
+        })
+
+    return Response(data)
+
+
+# =====================================================
+# API DETAIL BERITA (FIX UTAMA)
+# =====================================================
+@api_view(['GET'])
+def api_detail_berita(request, slug):
+    # 🔥 cari berdasarkan slug + hanya yang publish
+    p = Post.objects.filter(slug=slug, is_published=True).first()
+
+    if not p:
+        return Response({
+            "error": "Berita tidak ditemukan",
+            "slug_dicari": slug
+        }, status=404)
+
+    return Response({
+        "id": p.id,
+        "title": p.title,
+        "slug": p.slug,
+        "content": p.content,
+        "thumbnail": p.thumbnail.url if p.thumbnail else None,
+        "created_at": p.created_at,
+    })
+
+
+# =====================================================
+# API BIDANG LIST
+# =====================================================
+@api_view(['GET'])
+def api_bidang(request):
+    bidang_list = Bidang.objects.all()
+
+    data = []
+    for b in bidang_list:
+        data.append({
+            "id": b.id,
+            "nama": b.nama,
+            "slug": b.slug,
+            "deskripsi": b.deskripsi,
+            "foto": b.foto.url if b.foto else None,
+        })
+
+    return Response(data)
+
+
+# =====================================================
+# API DETAIL BIDANG
+# =====================================================
+@api_view(['GET'])
+def api_detail_bidang(request, slug):
+    bidang = Bidang.objects.filter(slug=slug).first()
+
+    if not bidang:
+        return Response({"error": "Bidang tidak ditemukan"}, status=404)
+
+    data = {
+        "id": bidang.id,
+        "nama": bidang.nama,
+        "slug": bidang.slug,
+        "deskripsi": bidang.deskripsi,
+        "foto": bidang.foto.url if bidang.foto else None,
+
+        "personil": [
+            {
+                "id": p.id,
+                "nama": p.nama,
+                "jabatan": p.jabatan,
+                "foto": p.foto.url if p.foto else None,
+                "urutan": p.urutan
+            }
+            for p in bidang.personil.all().order_by('urutan')
+        ],
+
+        "program_kerja": [
+            {
+                "id": pr.id,
+                "judul": pr.judul,
+                "deskripsi": pr.deskripsi,
+                "foto": pr.foto.url if pr.foto else None,
+                "tanggal": pr.tanggal
+            }
+            for pr in bidang.program.all()
+        ]
+    }
+
+    return Response(data)
